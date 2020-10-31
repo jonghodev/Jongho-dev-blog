@@ -1,6 +1,6 @@
 ---
 title: JPA - 트랜잭션과 락
-date: 2020-10-31 13:10:66
+date: 2020-10-17 20:10:66
 category: java
 thumbnail: { thumbnailSrc }
 draft: false
