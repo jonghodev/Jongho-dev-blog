@@ -1,0 +1,175 @@
+---
+title: JPA - 영속성 컨텍스트
+date: 2020-10-12 13:10:79
+category: java
+thumbnail: { thumbnailSrc }
+draft: false
+---
+
+본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
+
+좋은 책 써주셔서 감사합니다. 김영한님.
+
+## 엔티티 매니저 팩토리와 엔티티 매니저
+
+데이터베이스를 하나만 사용하면 일반적으로 EntityManager Factory 를 하나만 생성한다.
+
+```java
+// 공장 만들기, 비용이 아주 많이 든다.
+EntityManagerFactory emf = Persistence.createEntityManager("jpabook");
+
+// 비용이 거의 들지 않는다.
+// Database connection 이 필요한 시점까지 디비 커넥션을 얻지 않는다.
+EntityManager em = emf.createEntityManager();
+```
+
+하면 META-INF/persistence.xml 에 있는 정보를 바탕으로 생성한다.
+
+Entity Manger Factory 를 생성하는 일은 비용이 크므로, 한 개만 만들어서 애플리케이션 전체에서 공유하도록 설계되어 있다. 반면에 공장에서 Entity Manager 를 생성하는 것은 비용이 거의 들지 않는다.
+
+`EntityManagerFactory` 는 여러 스레드가 접근해도 안전하므로 스레드간 공유해도 되지만, `EntityManager` 는 여러 스레드가 접근하면 동시성 문제가 발생하므로 스레드 간에 공유하면 안 된다.
+
+`EntityManager` 는 `Database connection` 이 필요한 시점까지 디비 커넥션을 얻지 않는다.
+하이버네이트를 포함한 JPA 구현체들은 EntityManagerFactory 를 생성할 때 커넥션 풀도 만든다.
+
+## Entity Life Cycle
+
+![](./images/persistent_context.png)
+
+- 비영속(new/transient): 영속성 컨텍스트와 관계가 전혀 없는 상태
+- 영속(managed): 영속성 컨텍스트에 저장된 상태
+- 준영속(detached): 영속성 컨텍스트에 저장되었다가 분리된 상태
+- 삭제(removed): 삭제된 상태
+
+## 비영속
+
+```java
+Member member = new Member();
+member.setId("member1");
+member.setUsername("user1");
+
+// em.persist() 호출 전
+```
+
+위 객체는 순수한 객체다. em.persist() 를 호출 전 상태이므로 비영속 상태이다.
+
+## 영속
+
+```java
+// 객체를 저장한 상태
+em.persist();
+```
+
+엔티티 매니저를 통해서 엔티티를 영속성 컨텍스트에 저장했다.
+`em.find()` 나 `JPQL` 을 사용해서 조회한 엔티티도 영속성 컨텍스트가 관리하는 영속 상태다.
+
+## 준영속
+
+```java
+em.detach(member);
+em.clear();
+em.close();
+```
+
+거의 비영속에 가까워 영속성 컨텍스트의 특징인 1차 캐시, 쓰기 지연, ... 등이 동작 하지 않는다.
+
+한 번 영속 상태인적이 있으므로 비영속 상태와 다르게 식별자 값이 반드시 있다.
+
+지연 로딩을 할 수 없다.
+
+## 삭제
+
+```java
+em.remove(member);
+```
+
+## 영속성 컨텍스트의 특징
+
+- 영속 상태는 식별자 값이 반드시 있어야 한다.
+  영속성 컨텍스트 내부에 Map 이 하나 있는데 `@Id` 로 매핑된 값이 키가 된다.
+- JPA 는 보통 `Transacition commit` 시에 영속성 컨텍스트에 저장된 엔티티를 데이터베이스에 적용하는데 이것을 Flush 라고 한다.
+
+## 영속성 컨텍스트가 엔티티를 관리할 때의 장점
+
+1. 1차 캐시
+
+`em.find()` 호출 시 1차 캐시를 조회하고 없으면 DB 를 조회한다.
+
+2. 동일성 보장
+
+식별자가 같은 엔티티 인스턴스는 동일한 객체이다.
+
+```java
+Member member1 = em.find(Member.class, "member");
+Member member2 = em.find(Member.class, "member");
+
+assertTrue(member1 == member2); // 둘은 같은 인스턴스이다.
+```
+
+3. 트랜잭션을 지원하는 쓰기 지연
+   EntityManager 는 트랙젝션을 커밋하기 직전까지 디비에 반영하지 않고 `INSERT SQL` 을 모아두고 트랙잭션 커밋 시 모아둔 쿼리를 디비에 전송한다.
+
+```java
+Member a = em.find(Member.class, "member1");
+Member b = em.find(Member.class, "member1");
+System.out.println(a == b); // True
+```
+
+4. 변경 감지
+
+JPA 는 변경감지(dirty checking)를 한다.
+
+```java
+EntityManager em = emf.createEntityManager();
+EntityTransaction transaction = em.getTransaction();
+transaction.begin();
+
+Member memberA = em.find(Member.class, "memberA");
+
+memberA.setUsername("Member A !!");
+memberA.setAge(10);
+
+// em.update(memberA) 이런 코드가 필요 없다.
+transaction.commit();
+```
+
+5. 지연 로딩
+
+JPA 는 엔티티를 영속성 컨텍스트에 보관할 때 최초 상태를 복사해 스냅샷을 만들어둔다.
+그리고 플러시 시점에 스냅샷과 엔티티를 비교해 변경된 엔티티가 있다면 수정 쿼리를 생성해서 지연 SQL 저장소에 보낸다. 그리고 변경감지는 영속성 컨텍스트가 관리하는 영속 상태의 엔티티에만 적용된다.
+
+이때, JPA 의 기본 전략은 모든 필드를 업데이트 하기 때문에 한 개의 필드만 바뀌더라도 모든 필드를 Update 하는 쿼리를 전송한다. 데이터 전송량이 증가한다는 단점은 있다. 장점은, 애플리케이션 로딩시점에 수정 쿼리를 미리 생성할 수 있고, 디비에 동일한 쿼리를 보내면 디비는 이전에 한 번 파싱한 쿼리를 재사용할 수 있다.
+
+만약 필드가 너무 많거나 저장하는 내용이 너무 크면 동적으로 Update Sql 을 생성하는 전략을 사용해야한다.
+
+```java
+@Entity
+@org.hibernate.annotations.DynamicUpdate
+@Table(name = "Member")
+public class Member {...}
+```
+
+이렇게 하면 수정된 데이터만 사용해 동적 UPDATE SQL 을 생성한다. 참고로 데이터를 저장할 때 데이터라 존재하는 (null 이 아닌) 필드만으로 INSERT SQL 을 생성하는 `@DynamicInsert` 도 있다.
+
+## Flush
+
+플러시는 영속성 컨텍스트의 변경내용을 디비에 반영한다.
+
+다음은 Flush 실행 시 Flow이다.
+
+1. 변경 감지가 동작하여 스냅샷 비교후 UPDATE SQL 을 쓰기 지연 SQL 저장소에 등록.
+2. 쓰기 지연 SQL 저장소의 쿼리를 데이터베이스에 전송.
+
+다은은 플러시 하는 방법이다.
+
+1. em.flush() 호출
+2. Trsanction Commit
+3. JPQL 쿼리 실행
+
+## 테스트 할 때 트랜잭션
+
+테스트 클래스에 `@Transactional` 을 적용하면 테스트가 끝날 때 트랜잭션을 커밋하지 않고 강제로 롤백을 한다. 문제는 롤백시에 영속성 컨텍스트를 플러시 하지 않아 SQL Log 가 남지 않는다는 것이다. 따라서 테스트 마지막에 `em.flush()` 를 호출해주면 로그를 볼 수 있다.
+
+## 영속성 컨텍스트가 다를 때 엔티티 비교
+
+`equals()` 를 사용해 동등성을 비교한다. 이때 비즈니스 키를 활용한 함수를 작성하는게 좋다.
