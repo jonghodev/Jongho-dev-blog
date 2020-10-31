@@ -1,9 +1,13 @@
 ---
 title: JPA - 웹 애플리케이션과 영속성 관리
-date: 2020-10-12 18:10:15
+date: 2020-10-14 13:10:15
 category: java
 draft: false
 ---
+
+본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
+
+좋은 책 써주셔서 감사합니다. 김영한님.
 
 # 웹 애플리케이션과 영속성 관리
 

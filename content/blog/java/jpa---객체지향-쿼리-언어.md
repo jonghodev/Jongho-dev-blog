@@ -5,6 +5,10 @@ category: java
 draft: false
 ---
 
+본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
+
+좋은 책 써주셔서 감사합니다. 김영한님.
+
 ## JPQL
 
 Java Persistence Query Language 은 엔티티 객체를 조회하는 객체지향 쿼리다.

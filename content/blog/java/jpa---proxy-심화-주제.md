@@ -1,8 +1,16 @@
-# Proxy 심화 주제
-
-### 영속성 컨텍스트 프록시
-
 ---
+title: JPA - Proxy 심화 주제
+date: 2020-10-17 15:10:62
+category: java
+thumbnail: { thumbnailSrc }
+draft: false
+---
+
+본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
+
+좋은 책 써주셔서 감사합니다. 김영한님.
+
+## 영속성 컨텍스트 프록시
 
 `Proxy` 로 조회해도 `em.find()` 를 통해 조회해도 엔티티의 동일성은 보장된다.
 
@@ -12,8 +20,11 @@
 Member refMember = em.getReference(Member.class, "member1");
 Member findMember = em.find(Member.class, "member1");
 
+
 System.out.println(refMember.getClass());
+// class jpabook.advanced.Member_$$_jvst843_0
 System.out.println(findMember.getClass());
+// class jpabook.advanced.Member_$$_jvst843_0
 
 Assert.assertTrue(refMember == findMember);
 ```
@@ -29,7 +40,9 @@ Member findMember = em.find(Member.class, "member1");
 Member refMember = em.getReference(Member.class, "member1");
 
 System.out.println(refMember.getClass());
+// class jpabook.advanced.Member
 System.out.println(findMember.getClass());
+// class jpabook.advanced.Member
 
 Assert.assertTrue(refMember == findMember);
 ```
@@ -38,9 +51,7 @@ Assert.assertTrue(refMember == findMember);
 
 원본 엔티티를 먼저 조회하면 영속성 컨텍스트는 원본 엔티티를 이미 데이터베이스에서 조회했으므로 `em.getReference()` 를 호출해도 원본을 반환한다.
 
-### 프록시 타입 비교
-
----
+## 프록시 타입 비교
 
 프록시는 원본 엔티티를 상속 받아서 만들어지므로 프록시로 조회한 엔티티의 타입을 비교할 때는 `==` 비교를 하면 안 되고 대신에 `instanceof` 를 사용해야 한다.
 
@@ -56,11 +67,11 @@ Assert.assertFalse(Member.class == refMember.getClass());
 Assert.assertTrue(refMember instanceof Member);
 ```
 
-### 프록시 동등성 비교
-
----
+## 프록시 동등성 비교
 
 엔티티드의 동등성을 비교하려면 비즈니스 키를 이용해 `equals()` 메소드를 오버라이딩하고 비교하면 된다. 그런데 IDE 나 외부 라이브러리를 사용해 구현한 `equals()` 메소드로 엔티티를 비교할 때, 비교 대상이 원본 엔티티면 문제가 없지만 프록시면 문제가 발생할 수 있다.
+
+지금부터 틀린 예제를 보여주겠다.
 
 ```java
 @Entity
@@ -69,45 +80,80 @@ public class Member {
 	@Id
 	private String id;
 	private String juminNo;
-	
+
 	public String getJuminNo() { return juminNo; }
 	public String setJuminNo(String juminNo) { this.juminNo = juminNo; }
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		if (!(obj instanceof Member)) return false; // (1)
-		
+		if (!(this.getClass() != obj.getClass())) return false; // (1) 설명 참고
+
 		Member member = (Member) obj;
-		
-		// (2)
-		if (juminNo != null ? !juminNo.equals(member.getName()) :
-				member.getName() != null)
+
+		// (2) 설명참고
+		if (name != null ? !name.equals(member.name) :
+				member.name != null)
 				return false;
-		
+
 		return true;
 	}
-	
-	
 }
 ```
 
-(1)
+위 예제는 name 이 비즈니스 키다. name 이 중복되는 회원이 없다고 가정하자.
 
-이곳에서는 this.getClass() 와 obj.getClass() 를 비교할게 아니라 Proxy 가 들어올 것을 대비해, instanceof 로 비교를 해야한다.
+(1) 설명
 
-(2)
+`getClass()` 메소드를 사용해서 비교하면 안 된다. 그 이유는 프록시는 원본 객체를 상속 받은 자식 타입이기 때문이다.
 
-`member.juminNo` 으로 접근하게 되면 문제가 생긴다. 왜냐면 Proxy 가 들어오게 되면 해당 객체는 멤버 변수에 접근해도 아무 값도 얻을 수 없기 때문이다. 따라서 Getter 접근자를 사용해야 한다. 따라서 `member.getJuminNo()` 을 사용했다.
+따라서 우리는 Proxy 객체가 들어올 것도 고려해 `instanceof` 연산자를 사용해 비교해야 한다.
+
+(2) 설명
+
+`member.name` 으로 접근하게 되면 문제가 생긴다.
+
+Proxy 객체가 들어왔을 때 문제가 생기기 때문이다.
+
+그 이유는, 해당 객체는 멤버 변수에는 아무 값도 없기 때문이다.
+
+따라서 Getter 접근자를 사용해 부모 객체의 멤버 변수를 접근하도록 해야한다.
+
+다음은 옳은 예제다.
+
+```java
+@Entity
+public class Member {
+
+	@Id
+	private String id;
+	private String juminNo;
+
+	public String getJuminNo() { return juminNo; }
+	public String setJuminNo(String juminNo) { this.juminNo = juminNo; }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof Member)) return false;
+
+		Member member = (Member) obj;
+
+		if (juminNo != null ? !juminNo.equals(member.getName()) :
+				member.getName() != null)
+				return false;
+
+		return true;
+	}
+}
+```
 
 **따라서 정리하자면 `Proxy` 의 동등성을 비교할 때는 2가지를 주의해야 한다.**
 
 1. `Proxy` 타입 비교는 `==` 비교 대신에 `instanceof` 를 사용한다.
 2. `Proxy` 의 멤버변수에 직접 접근하면 안 되고 대신에 접근자`Getter` 메소드를 사용해야 한다.
 
-### 상속 관계와 프록시
-
----
+## 상속 관계와 프록시
 
 **프록시를 부모 타입으로 조회하면 문제가 발생한다.** 왜냐면 그 `Proxy` 는 그 실제 클래스의 자식과는 관계가 없기 때문에 `instanceof` 연산을 통해 실제 논리적 관계를 알아낼 수 없기 때문이다.
 
