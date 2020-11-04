@@ -3,7 +3,7 @@ module.exports = {
   description: `개발 일지`,
   author: `Jongho`,
   introduction: `세상은 아름답다.`,
-  siteUrl: `https://www.jongho.dev`, // Your blog site url
+  siteUrl: `https://jongho.dev`, // Your blog site url
   social: {
     twitter: `jonghodev`,
     github: `jonghodev`,

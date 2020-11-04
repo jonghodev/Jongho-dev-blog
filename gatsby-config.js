@@ -98,6 +98,14 @@ module.exports = {
         pathToConfigModule: `src/utils/typography`,
       },
     },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://jongho.dev',
+        sitemap: 'https://jongho.dev/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-feed`,
