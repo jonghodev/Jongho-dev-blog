@@ -69,7 +69,6 @@ In this template...
       <li>sundo.kim: https://sundo.kim/</li>
       <li>knou blog: https://bangtong.in/</li>
       <li>taekki.dev: https://taekki.dev</li>
-      <li>kkh913's Developer Blog: https://kkh913.github.io</li>
       <li>Merrily, Code: https://merrily-code.netlify.app/</li>
     </ul>
   </p>
