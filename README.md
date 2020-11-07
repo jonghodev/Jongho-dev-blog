@@ -68,7 +68,6 @@ In this template...
       <li>samsara-ku's devlog: https://samsara-ku.dev/</li>
       <li>sundo.kim: https://sundo.kim/</li>
       <li>knou blog: https://bangtong.in/</li>
-      <li>cereme.dev: https://cereme.dev</li>
       <li>taekki.dev: https://taekki.dev</li>
       <li>kkh913's Developer Blog: https://kkh913.github.io</li>
       <li>Merrily, Code: https://merrily-code.netlify.app/</li>
