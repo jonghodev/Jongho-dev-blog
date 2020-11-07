@@ -10,9 +10,29 @@ draft: false
 
 좋은 책 써주셔서 감사합니다. 김영한님.
 
+## 영속성 컨텍스트란
+
+영속성 컨텍스트란, 엔티티를 영구 저장하는 환경이다. 영속성 컨텍스트는 엔티티 매니저를 생성할 때 하나 만들어진다.
+
+엔티티 매니저를 통해 영속성 컨텍스트에 접근할 수 있과 관리할 수 있다.
+
 ## 엔티티 매니저 팩토리와 엔티티 매니저
 
+엔티티 매니저 팩토리는 META-INF/persistence.xml 에 있는 정보를 바탕으로 생성된다.
+
+엔티티 매니저 팩토리에서 엔티티 매니저를 생성한다. JPA 의 기능 대부분은 이 엔티티 매니저가 제공을 한다.
+
+<span style="color:orange;font-weight:bold">엔티티 매니저를 사용해서 엔티티를 데이터베이스에 등록/수정/삭제/조회할 수 있다.</span>
+
+엔티티 매니저는 <span style="color:orange;font-weight:bold">내부에 데이터소스(데이터베이스 커넥션)를 유지하면서 데이터베이스와 통신한다.</span> 따라서 애플리케이션 개발자는 엔티티 매니저를 가상의 데이터베이스라고 생각할 수 있다.
+
+그리고 엔티티 매니저는 <span style="color:red;font-weight:bold">데이터베이스 커넥션과 밀접한 관계가 있으므로 스레드 간에 공유하거나 재사용하면 안 된다.</span>
+
 데이터베이스를 하나만 사용하면 일반적으로 EntityManager Factory 를 하나만 생성한다.
+
+사용이 끝난 엔티티 매니저는 `em.close()` 를 호출해 종료해야 한다.
+
+그리고 애플리케이션이 종료될 때 엔티티 매니저 팩토리도 `emf.close()`를 호출해 종료해야 한다.
 
 ```java
 // 공장 만들기, 비용이 아주 많이 든다.
@@ -23,14 +43,12 @@ EntityManagerFactory emf = Persistence.createEntityManager("jpabook");
 EntityManager em = emf.createEntityManager();
 ```
 
-하면 META-INF/persistence.xml 에 있는 정보를 바탕으로 생성한다.
+Entity Manger Factory 를 생성하는 일은 비용이 크므로, 한 개만 만들어서 애플리케이션 전체에서 공유하도록 설계되어 있다. 반면에 그 공장에서 Entity Manager 를 생성하는 것은 비용이 거의 들지 않는다.
 
-Entity Manger Factory 를 생성하는 일은 비용이 크므로, 한 개만 만들어서 애플리케이션 전체에서 공유하도록 설계되어 있다. 반면에 공장에서 Entity Manager 를 생성하는 것은 비용이 거의 들지 않는다.
-
-`EntityManagerFactory` 는 여러 스레드가 접근해도 안전하므로 스레드간 공유해도 되지만, `EntityManager` 는 여러 스레드가 접근하면 동시성 문제가 발생하므로 스레드 간에 공유하면 안 된다.
+`EntityManagerFactory` 는 여러 스레드가 접근해도 안전하므로 스레드간 **공유해도 되지만**, `EntityManager` 는 여러 스레드가 접근하면 **동시성 문제**가 발생하므로 **스레드 간에 공유하면** 안 된다.
 
 `EntityManager` 는 `Database connection` 이 필요한 시점까지 디비 커넥션을 얻지 않는다.
-하이버네이트를 포함한 JPA 구현체들은 EntityManagerFactory 를 생성할 때 커넥션 풀도 만든다.
+하이버네이트를 포함한 JPA 구현체들은 `EntityManagerFactory` 를 생성할 때 **커넥션 풀**도 만든다.
 
 ## Entity Life Cycle
 
@@ -62,6 +80,7 @@ em.persist();
 
 엔티티 매니저를 통해서 엔티티를 영속성 컨텍스트에 저장했다.
 `em.find()` 나 `JPQL` 을 사용해서 조회한 엔티티도 영속성 컨텍스트가 관리하는 영속 상태다.
+**영속에서 중요한 개념은, 영속 상태란 것은 영속성 컨텍스트에 의해 관리 된다는 뜻이다.**
 
 ## 준영속
 
@@ -74,7 +93,7 @@ em.close();
 거의 비영속에 가까워 영속성 컨텍스트의 특징인 1차 캐시, 쓰기 지연, ... 등이 동작 하지 않는다.
 
 한 번 영속 상태인적이 있으므로 비영속 상태와 다르게 식별자 값이 반드시 있다.
-
+ㄹ
 지연 로딩을 할 수 없다.
 
 ## 삭제
@@ -153,18 +172,51 @@ public class Member {...}
 
 ## Flush
 
-플러시는 영속성 컨텍스트의 변경내용을 디비에 반영한다.
+플러시는 영속성 컨텍스트의 변경내용을 데이터베이스에 반영한다.
 
 다음은 Flush 실행 시 Flow이다.
 
 1. 변경 감지가 동작하여 스냅샷 비교후 UPDATE SQL 을 쓰기 지연 SQL 저장소에 등록.
 2. 쓰기 지연 SQL 저장소의 쿼리를 데이터베이스에 전송.
 
-다은은 플러시 하는 방법이다.
+영속성 컨텍스트를 플러시 하는 방법은 3가지다.
 
 1. em.flush() 호출
 2. Trsanction Commit
 3. JPQL 쿼리 실행
+
+### 직접 호출
+
+엔티티 매니저의 `flush()` 메소드를 직접 호출해서 영속성 컨텍스트를 강제로 플러시한다. 테스트나 다른 프레임워크와 함께 JPA 를 사용할 때를 제외하고는 거의 사용하지 않는다.
+
+### 트랜잭션 커밋 시 플러시 자동 호출
+
+데이터베이스에 변경 내용을 SQL 로 전달하지 않고 트랜잭셔만 커밋하면 어떤 데이터도 데이터베이스에 반영되지 않는다. 따라서 트랜잭션을 커밋하기 전에 꼭 플러시를 호출해서 영속성 컨텍스트의
+변경 내용을 데이터베이스에 반영해야 한다. JPA 는 이런 문제를 예방하기 위해 트랜잭션을 커밋할 때 플러시를 자동으로 호출한다.
+
+### JPQL 쿼리 실행 시 플러시 자동 호출
+
+JPQL 이나 Criteria 같은 객체지향 쿼리를 호출할 때도 플러시가 실행된다. 그 이유를 아래 예제코드와 함께 알아보자.
+
+```java
+em.persist(memberA);
+em.persist(memberB);
+em.persist(memberC);
+
+// 중간에 JPQL 실행
+query = em.createQuery("select m from member", Member.class);
+List<Member> members = query.getReusltList();
+```
+
+memberA, B, C 는 영속성 컨텍스트에는 존재하지만 실제 데이터베이스에는 반영되지 않았다.
+
+그런데 JPQL 은 SQL 로 변환되어 데이터베이스에 쿼리로 바로 전송된다.
+
+그래서 JPQL 에 memberA, B, C 를 제대로 반영하기 위해선
+
+Flush 를 해서 현재 영속성 컨텍스트의 쓰기 저장소에 있는 쿼리를 실행할 수 밖에 없는 것이다.
+
+따라서 JQPL 을 호출할 때 JPA 는 자동으로 `flush()` 를 호출한다.
 
 ## 테스트 할 때 트랜잭션
 
