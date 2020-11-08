@@ -1,6 +1,6 @@
 ---
-title: [공유] mongodb index
-date: 2020-11-09 06:11:94
+title: MongoDB Index 에 대해 알아보자
+date: 2020-11-09 06:11:10
 category: db
 draft: true
 ---
