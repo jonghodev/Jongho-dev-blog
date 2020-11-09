@@ -15,6 +15,10 @@ ECR 는 사용자 업로드한 이미지를 고가용성(Highly Avaliable, HA) �
 
 > Container Image 를 S3 에 저장해 고가용성을 유자한다.
 
+단순히 생각하면 Docker Image 를 저장해주는 Docker Hub 와 비슷한 기능을 한다고 할 수 있다.
+
+AWS Service ECS 같은 것과 더 결합이 편할 것 같다.
+
 ## 기술적 측면
 
 - HTTPS Transfer 을 지원한다.
@@ -59,10 +63,6 @@ Data Outbound 에 대한 비용만 측정된다.
 Storage: 1달에 500 MB 를 제공한다.
 
 Data Transfer: 1년에 15 GB 를 제공한다.
-
-### 개인적인 생각
-
-생각보다 비싼 것 같진 않다. 웹서버를 띄운다 했을 때 파일 같은 것보다, 단순 JSON 데이터만 응답하는 서버라면 저렴할 것 같다.
 
 ## 출처
 
