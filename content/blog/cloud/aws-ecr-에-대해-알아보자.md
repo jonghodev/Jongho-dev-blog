@@ -2,7 +2,7 @@
 title: AWS ECR 에 대해 알아보자
 date: 2020-11-09 10:11:86
 category: cloud
-draft: true
+draft: false
 ---
 
 ECS 와 통합된 Fully Managed Docker Container registiry 이다.
