@@ -40,6 +40,10 @@ Facebook 에서 GraphQL 을 [만든 이유](https://graphql.org/blog/graphql-a-q
 
 GraphQL 을 사용하게 되면 상대적으로 Backend 의 부담이 줄고 Front 에 부담이 증가하게 된다.
 
+GraphQL 의 장점 중 하나는 Over Fetch 를 줄일 수 있다는 것이다. 자신이 필요한 데이터는 1갠데
+
+REST API 를 사용할 경우 모든 Data 를 Fetch 해야하는 부담이 있을 수 있다.
+
 ## GraphQL 구조
 
 ![](./images/2020-11-07-graphql-vs-rest-api.png)
@@ -103,6 +107,10 @@ GraphQL 의 Apollo Server 라는 라이브러리는 그 규격을 정의할 필�
 그렇지만 페이스북과 같은 유즈케이스를 갖는 곳에서는 GraphQL 을 많이 사용하려 할 것 같다.
 
 그리고 하이브리드 형태로 REST 와 GraphQL 을 함께 사용할 수도 있겠지만 프로젝트의 복잡성이 증가하고 API 의 품질이 낮아지니 잘 고려해보고 사용해야겠다.
+
+## 참고
+
+[GraphQL Spec](https://github.com/graphql/graphql-spec)
 
 ## 출처
 
