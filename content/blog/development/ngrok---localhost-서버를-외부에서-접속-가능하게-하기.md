@@ -2,7 +2,7 @@
 title: ngrok - localhost 서버를 외부에서 접속 가능하게 하기
 date: 2020-11-12 6:30:00
 category: development
-draft: true
+draft: false
 ---
 
 우리는 Local 에서 서버를 띄우고 외부 테스트를 위해서 배포를 한다.
