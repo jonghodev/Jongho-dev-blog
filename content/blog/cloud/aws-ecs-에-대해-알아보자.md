@@ -5,9 +5,9 @@ category: cloud
 draft: true
 ---
 
-도커는 컨테이너 가상화 도구다. 그리고 컨테이너의 수가 많아지면서 컨테이너를 관리해주는 오케스트레이션 도구가 필요해진다.
+도커는 컨테이너 가상화 도구다. 그리고 컨테이너의 수가 많아지면서 컨테이너를 관리해주는 오케스트레이션 툴이 필요해진다.
 
-이때 도커에서 만든 도커스웜이나 구글의 쿠버네티스, 지금부터 소개할 Elastic Container Service 같은 것을 사용하게 된다.
+이때 도커에서 만든 Docker Swram이나 구글의 Kubernates, 지금부터 소개할 Elastic Container Service 같은 것을 사용하게 된다.
 
 ECS 는 Fully Managed Container Orchestration Service 다. AWS 에 관리해주는 컨테이너 오케스트레이션 서비스라고 할 수 있다.
 
