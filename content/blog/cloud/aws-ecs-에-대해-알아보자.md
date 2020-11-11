@@ -2,7 +2,7 @@
 title: AWS ECS 에 대해 알아보자
 date: 2020-11-11 6:40:45
 category: cloud
-draft: true
+draft: false
 ---
 
 도커는 컨테이너 가상화 도구다. 그리고 컨테이너의 수가 많아지면서 컨테이너를 관리해주는 오케스트레이션 툴이 필요해진다.
