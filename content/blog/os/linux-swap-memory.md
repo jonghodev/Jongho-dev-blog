@@ -1,7 +1,7 @@
 ---
-title: 'Linux: Swap Memory 와 적용 방법'
+title: 'Linux Swap Memory'
 date: '2020-09-20 12:30:00'
-category: Linux
+category: os
 draft: false
 ---
 
