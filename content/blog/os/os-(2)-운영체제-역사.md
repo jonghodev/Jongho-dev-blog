@@ -66,3 +66,7 @@ CPU는 매우 빠르게 Switching 을 하기 때문에 사용자 입장에서는
 ### 가상 메모리 (Virtual Memory)
 
 하드메모리 디스크를 메인메모리처럼 사용하게 한다.
+
+## 출처
+
+http://www.kocw.net/home/search/kemView.do?kemId=978503
