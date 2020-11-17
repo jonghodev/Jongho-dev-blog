@@ -1,5 +1,5 @@
 ---
-title: OS 운영체제 서론
+title: OS (1) 운영체제 서론
 date: 2020-11-16 07:00:00
 category: fundamental
 draft: false
