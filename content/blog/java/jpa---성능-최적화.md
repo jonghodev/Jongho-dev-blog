@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## N+1 문제
 
 ```java
@@ -211,3 +207,7 @@ em.persist(new Member()); // 7
 ## 트랜잭션을 지원하는 쓰기 지연과 애플리케이션 확장성
 
 트랜잭션을 지원하는 쓰기 지연과 변경 감지 기능 덕분에 성능과 개발의 편의성이라는 두 마리 토끼를 모두 잡을 수 있었다. 하지만 진짜 장점은 데이터베이스 테이블 로우에 락을 걸리는 시간을 최소화한다는 점이다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

@@ -5,12 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
-# 웹 애플리케이션과 영속성 관리
-
 스프링 컨테이너의 기본 전략
 
 스프링 컨테이너는 트랜잭션 범위의 영속성 컨텍스트 전략을 기본으로 사용한다.
@@ -79,3 +73,7 @@ class MemberController {
 ```
 
 위 문제의 원인은, 같은 영속성 컨텍스트를 여러 트랜잭션이 공유할 수 있기 때문에 발생한다. OSIV 사용하지 않는 Transaction 범위의 영속성 컨텍스트 전략은 트랜잭션의 생명주기와 영속성 컨텍스트의 생명주기가 같으므로 이런 문제가 발생하지 않는다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

@@ -6,12 +6,6 @@ thumbnail: { thumbnailSrc }
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
-## 영속성 컨텍스트 프록시
-
 `Proxy` 로 조회해도 `em.find()` 를 통해 조회해도 엔티티의 동일성은 보장된다.
 
 먼저 proxy 를 조회하고 원본 엔티티를 조회해보자.
@@ -161,3 +155,7 @@ public class Member {
 
 1. JPQL 로 대상 직접 조회
 2. 프록시를 벗긴다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

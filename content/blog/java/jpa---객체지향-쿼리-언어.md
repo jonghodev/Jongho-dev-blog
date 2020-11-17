@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## JPQL
 
 Java Persistence Query Language 은 엔티티 객체를 조회하는 객체지향 쿼리다.
@@ -123,3 +119,7 @@ WHERE T.NAME = 'TeamA'
 
 - 항상 내부 조인이다.
 - 컬렉션은 경로 탐색의 끝이다. 컬렉션에서 경로 탐색을 하려면 명시적으로 조인을 해서 별칭을 얻어야 한다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

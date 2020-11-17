@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## 일대다
 
 일대다 다대일 관계에서 항상 외래키는 다가 가지고 있다.
@@ -57,3 +53,7 @@ addMember, setTeam 과 같은 것들이 있다. 또한 무한루프에 빠지기
 대상 테이블에 외래키가 있으면 데이터베이스 개발자에게 편리하다. 그 이유는 일대일에서 일대다로 변경할 때 테이블 구조를 변경할 필요 없이 유지할 수 있기 때문이다.
 
 ex) Member 와 Locker 가 있을 때 외래키가 Locker 에게 있으면 일대다가 되어 Locker 가 많아져도 테이블 구조를 변경할 필요가 없다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

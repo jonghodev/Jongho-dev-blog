@@ -6,12 +6,6 @@ thumbnail: { thumbnailSrc }
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
-## 표준 예외 정리
-
 JPA 표준 예외들은 `javax.persistence.PersistenceException` 의 자식클래스다. 그리고 이 예외 클래스는 `RuntimeException` 의 자식이다.
 
 JPA 표준 예외는 크게 2가지로 나눌 수 있다.
@@ -38,3 +32,7 @@ ex) `javax.persitence.PersistenceException` → `org.springframework.orm.jpa.Jpa
 문제는 **OSIV** 처럼 영속성 컨텍스트의 범위를 트랜잭션 범위보다 넓게 사용해서 여러 트랜잭션이 하나의 영속성 컨텍스트를 사용할 때 발생한다. 그래서 스프링 프레임워크는 영속성 컨텍스의 범위가 트랜잭션의 범위보다 넓게 설정하면 트랜잭션 롤백 시 영속성 컨텍스트를 초기화해서 잘못된 영속성 컨텍스트를 사용하는 문제를 예방한다.
 
 더 자세한 내용은 `org.springframework.orm.jpa.JpaTransactionalManger` 의 `doRollback()` 메소드를 참고하자.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## 식별 관계
 
 부모 테이블의 기본 키를 내려 받아 기본 키 + 외래키로 사용하는 전략이다.
@@ -227,3 +223,7 @@ id1.equals(id2) // true 가 나와야한다.
 
 만약 equals 를 따로 구현하지 않다면 Object Class 의 인스턴스 참조값 비교 == 를 하기 때문에
 false 가 나온다. 따라서 equals 를 Override 를 해서 true 가 나오게 해야한다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

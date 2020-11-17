@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## 용어
 
 정규화: 중복을 줄이고, 무결성을 향상시킨다.
@@ -56,3 +52,7 @@ draft: false
 단점
 
 - 여러 자식 테이블 함께 UNION 을 사용해야 하기 때문에 조회할 때 성능이 느리다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)

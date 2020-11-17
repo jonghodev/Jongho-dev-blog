@@ -5,10 +5,6 @@ category: java
 draft: false
 ---
 
-본 포스팅은 [자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446) 책을 읽고 쓰는 포스팅입니다.
-
-좋은 책 써주셔서 감사합니다. 김영한님.
-
 ## JPA - 쓰기 쿼리는 언제 실행될까
 
 JPA 에서 Insert 문을 호출할 때마다 Query 가 생성되서 바로 데이터베이스에 적용되지 않는다.
@@ -45,3 +41,7 @@ em.persist(memberC);
 그 이유는 영속성 컨텍스트에서만 조회를 하기 때문이다.
 
 그리고 `flush()` 메소드는 디비에 쿼리만 전송을 하고, 실제 이것은 커밋이 된 것이 아니기 때문에 언제든 롤백이 될 수 있다.
+
+## 출처
+
+[자바 ORM 표준 JPA 프로그래밍](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=62681446)
