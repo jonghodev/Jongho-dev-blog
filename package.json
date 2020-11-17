@@ -4,9 +4,6 @@
   "description": "Jongho dev blog",
   "version": "0.1.0",
   "author": "Jongho[JonghoDev]<jongho.dev@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/JaeYeopHan/gatsby-starter-bee/issues"
-  },
   "dependencies": {
     "gatsby": "^2.2.8",
     "gatsby-image": "^2.0.34",
@@ -67,7 +64,7 @@
     "recursive-readdir": "^2.2.2",
     "signale": "^1.3.0"
   },
-  "homepage": "https://github.com/JaeYeopHan/gatsby-starter-bee#readme",
+  "homepage": "https://github.com/jonghodev/jongho-dev-blog",
   "keywords": [
     "gatsby"
   ],
@@ -75,7 +72,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JaeYeopHan/gatsby-starter-bee.git"
+    "url": "git+https://github.com/jonghodev/jongho-dev-blog"
   },
   "scripts": {
     "post": "gatsby-post-gen",
