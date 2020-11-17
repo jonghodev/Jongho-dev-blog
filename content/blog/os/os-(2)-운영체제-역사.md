@@ -1,7 +1,7 @@
 ---
 title: OS (2) 운영체제 역사
 date: 2020-11-17 10:11:82
-category: fundamental
+category: os
 draft: false
 ---
 
@@ -12,8 +12,6 @@ Memory 에는 OS 와 User Program 1개가 올라간다.
 IO 시간 동안 CPU Idle time 을 갖게 된다.
 
 ## Multi programming system
-
----
 
 이전에는 Memory 에 하나의 프로그램만 올라갔지만
 
@@ -39,11 +37,9 @@ User Program 이 많아졌기 때문에 Memory 를 관리해야 한다.
 
 ## Time-sharing system (TSS)
 
----
+Unix 가 대표적인 TSS 시스템이다. 우리가 현대에 사용하는 대부분의 시스템도 TSS 다.
 
-Unix 가 대표적인 TTS 시스템이다. 우리가 현대에 사용하는 대부분의 시스템도 TTS 다.
-
-거의 여기서 OS 완성이 됐다.
+거의 여기서 OS가 완성됐다.
 
 ### Interactive
 

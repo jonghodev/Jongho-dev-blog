@@ -1,32 +1,32 @@
 ---
 title: OS (1) 운영체제 서론
 date: 2020-11-16 07:00:00
-category: fundamental
+category: os
 draft: false
 ---
 
-## OS
+keypoint: 운영체제는 하드웨어를 관리한다.
 
----
+## OS 의 목적
 
-운영체제는 하드웨어를 관리한다.
+### 성능 향상
 
-### 목적
+MsDos 랑 Windows7 과 속도는 천지차이다.
 
-- 성능 향상
-  MsDos 랑 Windows7 과 속도는 천지차이다.
-  어떻게 성능을 올릴 수 있을까?
-- 사용자 편의성
-  누구든지 학습해서 사용할 수 있다.
+어떻게 성능을 올릴 수 있을까?
 
-### Main Memory
+### 사용자 편의성
+
+누구든지 학습해서 사용할 수 있다.
+
+## Main Memory
 
 - Ram 과 Rom 으로 나누어진다.
 - Ram은 휘발성이다.
 - Rom (Read only memory)은 휘발성이 아니다.
 - Rom 은 용량이 작고, 대부분 Ram 이 용량을 차지한다.
 
-### Rom
+## Rom
 
 부팅 시 Rom 의 코드(Instruction)를 먼저 읽어온다.
 
@@ -52,12 +52,14 @@ OS 에서 하드웨어를 관리하는 것은 OS Kernal 이다. (가장 중요)
 
 OS = kernel + shell
 
-우리가 보는 것은 shell 밖에 없다.
+우리가 보고 상호작용하는 것은 shell 이다.
 
 OS: **Process Management, Memory Management**, IO Management, File Management, Network Management
 
 ## 정리
 
----
-
 OS 는 시스템의 성능을 향상시키고 사용자 편의성을 증가 시킨다. Main Memory 는 대부분의 용량을 차지하는 Ram 과 적은 용량을 차지하는 Rom 이 있다. 컴퓨터가 켜질 때, 이 Rom 에서 POST 라는 작업을 실행함으로써 Main Memory, Disk Storage, Keyboard 같은 것을 테스트 한다. 그리고나서 Boot Load 를 통해 OS 를 하드 디스크에서 찾아 Main Memory 의 Ram 에 적재 시킨다. 이후로는 할 일이 없어서 역할이 끝난다. OS 는 Main Memory 에 항상 상주한다.
+
+## 출처
+
+http://www.kocw.net/home/search/kemView.do?kemId=978503

@@ -1,7 +1,7 @@
 ---
 title: OS (0) 공부시작
 date: 2020-11-15 10:11:75
-category: fundamental
+category: os
 draft: false
 ---
 
