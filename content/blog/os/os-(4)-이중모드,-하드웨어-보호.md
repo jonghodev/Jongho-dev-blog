@@ -27,7 +27,7 @@ CPU 에는 레지스터가 있다. 이 레지스터 하나에 비트들이 기�
 
 ### 메모리 보호
 
-**Memory Management Unit** (MMU)
+**Memory Management Unit**(MMU)
 
 OS 가 설정한 Base 와 Limit 사이의 메모리 참조만 허락한다.
 
