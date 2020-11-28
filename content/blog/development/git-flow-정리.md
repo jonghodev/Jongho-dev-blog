@@ -29,7 +29,7 @@ feature branch 와 마찬가지로 개발자들이 직접 작업하는 공간 �
 QA 같은 내부 테스트 팀이 테스트를 하는 브랜치다. production 으로 배포하기 전에 검수하는 최종 관문이라고 할 수 있다.
 개발자는 오직 feature 혹은 develop branch 에서만 작업을 한다.그 작업한 것을 pull request 를 보내 코드리뷰 후 머지하는 방식으로 release, master 로 소스코드를 옮긴다.
 
-#### 4. master branch
+## 4. master branch
 
 production 으로 실질적으로 배포되는 브랜치이고 조심스럽게 다루어야 하는 곳이다.
 보통 이곳에 푸쉬를 하면 webhook 을 통해 ci/cd 를 돌려 production 서버에 배포를 한다.
