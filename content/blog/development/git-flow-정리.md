@@ -2,7 +2,6 @@
 title: Git flow 정리
 date: 2020-09-20 17:10:94
 category: development
-thumbnail: { thumbnailSrc }
 draft: false
 ---
 
