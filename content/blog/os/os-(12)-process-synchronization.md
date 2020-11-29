@@ -45,6 +45,8 @@ Process 간에 Synchronization 과 Thread 간의 Synchronization 이 일어날 �
 
 ## Semaphores
 
+![](./images/2020-11-27-semaphor.png)
+
 ```java
 class Semaphore {
   int value;
@@ -71,10 +73,6 @@ class Semaphore {
 }
 ```
 
-위와 같은 코드 래밸의 구조를 가지고 있다.
-
-![](https://flylib.com/books/1/410/1/html/2/images/16.1.jpg)
-
 Process 혹은 Thread 는 공유 자원이 있는 **Critical Section** 에 접근할 때 `aquire()` 함수를 호출한다.
 
 그리고 접근이 끝나면 `release()`함수를 호출한다.
@@ -89,7 +87,30 @@ B Process 가 임계구역에 들어갈 수 있게 된다.
 
 이렇게 임계구역에는 한 번에 한 프로세스만 들어갈 수 있게 해서 Mutual Exclusion 을 성립시킨다.
 
-## 예제: Bank Acrount Problem
+## Monitor
+
+### 모니터란
+
+[모니터](<https://en.wikipedia.org/wiki/Monitor_(synchronization)>)란 세마포 이후 등장한 프로세스 동기화 도구다.
+
+세마포보다 고수준 개념이다.
+
+### 구조
+
+- 공유자원 + 공유자원 접근함수
+- 2개의 Queues: 배타동기 + 조건동기
+- 진입 쓰레드가 조건 동기로 블록되면 새 쓰레드 진입가능
+- 새 쓰레드는 조건동기로 블록된 쓰레드를 깨울 수 있다.
+- 깨워진 쓰레드는 현재 쓰레드가 나가면 재진입할 수 있다.
+
+![](./images/2020-11-27-monitor.png)
+
+### 자바 모니터
+
+- 배타동기: synchronized 라는 키워드를 사용하여 지정
+- 조건동기: wati(), notify(), notifyAll() 메소드 사용
+
+## Semaphore 예제: Bank Account Problem
 
 Seamphore 를 활용하여 Mutual Exclusion 을 구현한 예제를 살펴보자.
 
@@ -148,51 +169,169 @@ import java.util.concurrent.Semaphore;
 
 public class BankAccount {
     int balance;
-    Semaphore dSam;
-    Semaphore wSam;
+    Semaphore sem;
 
     public BankAccount() {
-        dSam = new Semaphore(0);
-        wSam = new Semaphore(0);
+        sem = new Semaphore(1);
     }
 
     void deposit(int amount) {
+        try {
+            sem.acquire();
+        } catch (InterruptedException e) {}
+
         int temp = balance + amount;
         System.out.print("+");
         balance = temp;
-        wSam.release();
-        try {
-            dSam.acquire();
-        } catch (InterruptedException e) {}
+        sem.release();
     }
     void withdraw(int amount) {
         try {
-            wSam.acquire();
+            sem.acquire();
         } catch (InterruptedException e) {}
         int temp = balance - amount;
         System.out.print("-");
         balance = temp;
-        dSam.release();
+        sem.release();
     }
     int getBalance() {
         System.out.println(balance);
         return balance;
     }
 }
-
 ```
 
-위와 같은 방식으로 Parent 가 입금을 하고 나서 Child 가 돈을 출금하는
+[Github](https://github.com/jonghodev/os-study/tree/master/bank-account-problem-semaphor)
 
-Ordering 과 Mutual Exclusion 을 구현할 수 있다.
+순차적으로 하나의 쓰레드만 withdraw 혹은 deposit 함수를 호출할 수 있게 만들자.
 
-출력 값은 다음과 같을 것이다.
+아래에서 Deposit -> Withdraw 순서로 번갈아가며 일어나게 만들어 보자.
 
-```bash
-+-+-+-+-, ...
+## Semaphore Ordering 예제: Bank Account Problem
 
-balance = 0
+Parent, Child, Main Class 는 생략하겠다.
+
+BankAccount.java
+
+```java
+import java.util.concurrent.Semaphore;
+
+public class BankAccount {
+    int balance;
+    Semaphore dSem;
+    Semaphore wSem;
+
+    public BankAccount() {
+        dSem = new Semaphore(0);
+        wSem = new Semaphore(0);
+    }
+
+    void deposit(int amount) {
+        int temp = balance + amount;
+        System.out.print("+");
+        balance = temp;
+        wSem.release();
+        try {
+            dSem.acquire();
+        } catch (InterruptedException e) {}
+    }
+    void withdraw(int amount) {
+        try {
+            wSem.acquire();
+        } catch (InterruptedException e) {}
+        int temp = balance - amount;
+        System.out.print("-");
+        balance = temp;
+        dSem.release();
+    }
+    int getBalance() {
+        System.out.println(balance);
+        return balance;
+    }
+}
 ```
+
+[Github](https://github.com/jonghodev/os-study/tree/master/bank-account-problem-semaphor-ordering)
+
+위와 같은 방식으로 Parent 가 입금을 하고 나서 Child 가 돈을 출금하는 +-+-+-, ... 를 구현할 수 있다.
+
+기존방식과 차이점이 있다면, Semaphor 를 각각 선언한 후 값을 0으로 준 후
+
+먼저 실행하고 싶은 함수에서 그 다음 실행되야할 메소드의 세마포를 release() 하고 그다음 실행된 그 메소드에서
+
+다시 그 다음 실행 시키고싶은 메소드의 세마포를 release() 하는 구조다.
+
+## Monitor 예제: Bank Account Problem
+
+```java
+public class BankAccount {
+    int balance;
+
+    synchronized void deposit(int amount) {
+        int temp = balance - amount;
+        System.out.print("+");
+        balance = temp;
+    }
+    synchronized void withdraw(int amount) {
+        int temp = balance + amount;
+        System.out.print("-");
+        balance = temp;
+    }
+    int getBalance() {
+        System.out.println(balance);
+        return balance;
+    }
+}
+```
+
+[Github](https://github.com/jonghodev/os-study/tree/master/bank-account-problem-monitor)
+
+위와 같은 코드로 간단하게 synchronization 키워드만 메소드 앞에 붙여서 베타 동기를 지정해 구현할 수 있다.
+
+## Monitor Ordering 예제: Bank Account Problem
+
+```java
+public class BankAccount {
+    int balance;
+    // Parent 의 차례를 의미한다.
+    boolean pTurn = true;
+
+    synchronized void deposit(int amount) {
+        int temp = balance - amount;
+        System.out.print("+");
+        balance = temp;
+
+        pTurn = false;
+        // Child 를 깨우고
+        notify();
+        try {
+            // 자신은 블록된다.
+            wait();
+        } catch (InterruptedException e) {}
+    }
+    synchronized void withdraw(int amount) {
+        // Parent 의 차례일 경우 블록한다.
+        if (pTurn) {
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+        int temp = balance + amount;
+        System.out.print("-");
+        balance = temp;
+
+        pTurn = true;
+        // Parent 를 깨운다
+        notify();
+    }
+    int getBalance() {
+        System.out.println(balance);
+        return balance;
+    }
+}
+```
+
+[Github](https://github.com/jonghodev/os-study/tree/master/bank-account-problem-monitor-ordering)
 
 ## 생산자-소비자 문제(Producer and Consumer Problem)
 
@@ -208,7 +347,7 @@ balance = 0
   - 생산자: 버퍼가 가득 차면 기다려야 = 빈(empty) 공간이 있어야 함.
   - 소비자: 버퍼가 비면 기다려야 = 찬(full) 공간이 있어야 함.
 
-## 유한버퍼 문제(Bounded Buffer Problem) 예제
+## 유한버퍼 문제(Bounded Buffer Problem) 예제 [Semaphore]
 
 ```c
 semaphore fillCount = 0; // items produced
@@ -255,7 +394,7 @@ procedure consumer()
 
 다음 코드를 통해 해결하자.
 
-## 유한버퍼 문제(Bounded Buffer Problem) 예제 (개선)
+## 유한버퍼 문제(Bounded Buffer Problem) 예제 (개선) [Semaphore]
 
 ```c
 mutex buffer_mutex; // similar to "semaphore buffer_mutex = 1", but different (see notes below)
