@@ -93,7 +93,9 @@ B Process 가 임계구역에 들어갈 수 있게 된다.
 
 [모니터](<https://en.wikipedia.org/wiki/Monitor_(synchronization)>)란 세마포 이후 등장한 프로세스 동기화 도구다.
 
-세마포보다 고수준 개념이다.
+세마포보다 고수준 개념이다. 하이 Level Language 에서 일일이 코드의 시작 끝마다 Semaphor `aquire()`, `release()` 함수를 호출하는 것은 코드의 중복도 심하고 잊어먹을 수 있다.
+
+따라서 좀 더 추상화된 개념을 사용해서 쉽게 구현할 수 있다.
 
 ### 구조
 
@@ -347,7 +349,7 @@ public class BankAccount {
   - 생산자: 버퍼가 가득 차면 기다려야 = 빈(empty) 공간이 있어야 함.
   - 소비자: 버퍼가 비면 기다려야 = 찬(full) 공간이 있어야 함.
 
-## 유한버퍼 문제(Bounded Buffer Problem) 예제 [Semaphore]
+## Semaphore 유한버퍼 문제(Bounded Buffer Problem) 예제
 
 ```c
 semaphore fillCount = 0; // items produced
@@ -394,7 +396,7 @@ procedure consumer()
 
 다음 코드를 통해 해결하자.
 
-## 유한버퍼 문제(Bounded Buffer Problem) 예제 (개선) [Semaphore]
+## Semaphore 유한버퍼 문제(Bounded Buffer Problem) 예제 (개선)
 
 ```c
 mutex buffer_mutex; // similar to "semaphore buffer_mutex = 1", but different (see notes below)
