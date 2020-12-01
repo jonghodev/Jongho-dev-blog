@@ -1,8 +1,8 @@
 ---
 title: OS (13) Deadlocks
-date: 2020-12-01 00:20:00
+date: 2020-12-01 10:50:00
 category: os
-draft: true
+draft: false
 ---
 
 정리를 한 번 하고 시작하자.
