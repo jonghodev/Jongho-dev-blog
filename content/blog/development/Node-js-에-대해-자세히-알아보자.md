@@ -67,11 +67,13 @@ Node.js 에서는 Libuv 라는 라이브러리가 이벤트루프 역할을 한�
 
 여러 Request 가 들어왔다고 생각해보자. 평범한 함수는 V8 Engine 의 Call Stack 영역에서 처리된다. 그리고 비동기 API 는 Worker Thread 에서 실행되고 콜백함수를 Event Queue 에 넣는다. Worker Thread 에서 비동기 작업이 실행이 실행이 되고 이벤트 루프는 그것이 끝난지를 계속해서 확인한다. 작업이 끝난 것이 확인됬고 콜스택이 비어있으면 Event Queue 에 있는 것을 콜스택 영역에 넣어, 콜스택 영역에서 실행이 끝나면 그 Task 를 콜스택에서 제거하고 Event Queue 에서 제거한다.
 
-Worker Thread 에 대해서 더 알아보자.
+### Worker Thread
 
-기본적으로 Worker Thread 에는 4개의 쓰레드가 생성되어 있고 그 쓰레드는 분리된 Javascript VM 에서 작동한다. Worker Thread 를 생성하는 일은 무겁다. 새로운 VM 과 Global Context 를 생성한다. 새로운 힙영역을 할당하고 갈비지 콜렉터를 실행하며 그리고 메모리를 할당해야 한다. 이것은 OS Level 의 Thread 보다 Heavyweight 하다.
+기본적으로 Worker Thread 에는 4개의 쓰레드가 생성되어 있다. Worker Thread 를 생성하는 것은 OS Level Thread 보다 무거운 작업이고, 오히려 Mini Process 와 유사하다.
 
-_쓰레드끼리 일반적인 변수는 공유하지 않고 Shared Memory 라는 것을 공유한다. 이것은 워커 쓰레드 끼리도 공유 되며 메인 쓰레드와도 공유가 된다. 각각의 쓰레드는 메시지를 통해 통신할 수 있다._
+그 이유는, Worker Thread 를 생성할 때 새로운 Javascript VM, Global Context, Heap, Garbage Collector 를 생성하며 메모리를 약간 할당해주기 때문이다.
+
+쓰레드끼리 일반적인 변수는 공유하지 않고 Shared Memory 라는 것을 공유한다. 이것은 워커 쓰레드 끼리도 공유 되며 메인 쓰레드와도 공유가 된다. 각각의 쓰레드는 메시지를 통해 통신할 수 있다.
 
 ## 비동기 논블로킹
 
