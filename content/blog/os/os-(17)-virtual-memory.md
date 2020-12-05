@@ -118,3 +118,5 @@ Page Fault 가 일어날 때 Block 단위로 프로세스를 들고온다.
 http://www.kocw.net/home/search/kemView.do?kemId=978503
 
 http://contents.kocw.or.kr/KOCW/document/2013/kyungsung/yangheejae/os05.pdf
+
+https://www.cs.jhu.edu/~yairamir/cs418/os6/sld006.htm
