@@ -61,7 +61,7 @@ Call Stack 이 빈 상태가 되면, **Callback Queue 의 첫번째 콜백을 Ca
 
 ## Node.js 환경
 
-![](./images/node-js-system.jpg)
+![](./images/2020-10-27-node-js-system.jpg)
 
 Node.js 에서는 Libuv 라는 라이브러리가 이벤트루프 역할을 한다.
 
@@ -69,11 +69,27 @@ Node.js 에서는 Libuv 라는 라이브러리가 이벤트루프 역할을 한�
 
 ### Worker Thread
 
-기본적으로 Worker Thread 에는 4개의 쓰레드가 생성되어 있다. Worker Thread 를 생성하는 것은 OS Level Thread 보다 무거운 작업이고, 오히려 Mini Process 와 유사하다.
+Libuv 모듈은 내부적으로 Thread Pool 을 두어서 Worker Thread 를 미리 생성해둔다. Worker Thread 를 생성하는 것은 OS Level Thread 보다 무거운 작업이고, 오히려 Mini Process 와 유사하다.
 
 그 이유는, Worker Thread 를 생성할 때 새로운 Javascript VM, Global Context, Heap, Garbage Collector 를 생성하며 메모리를 약간 할당해주기 때문이다.
 
 쓰레드끼리 일반적인 변수는 공유하지 않고 Shared Memory 라는 것을 공유한다. 이것은 워커 쓰레드 끼리도 공유 되며 메인 쓰레드와도 공유가 된다. 각각의 쓰레드는 메시지를 통해 통신할 수 있다.
+
+![](./images/2020-10-27-node-js-worker-thread.png)
+
+```javascript
+const http = require('http')
+
+http
+  .createServer(function(req, res) {
+    res.writeHead(200)
+  })
+  .listen(8000, function() {})
+```
+
+위 코드를 통해 서버를 생성했다.
+
+그리고 위 사진을 보면 총 7개 의 Thread 가 떠있는 것을 볼 수 잇다. 맨위에 한 개는 Main Thread 도 그 밑에 6개가 Worker Thread 인걸로 짐작이 간다.
 
 ## 비동기 논블로킹
 
