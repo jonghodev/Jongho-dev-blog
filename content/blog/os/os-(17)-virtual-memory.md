@@ -13,13 +13,13 @@ draft: false
 
 동적 적재처럼 실행에 필요한 것만 메모리에 올린다는 개념은 비슷하다.
 
-## Difference between dynamic loading and demand pagigng
+## Difference between dynamic loading and demand paging
 
 [스텍오버플로](https://stackoverflow.com/questions/59786237/difference-between-dynamic-loading-and-demand-paging#:~:text=Dynamic%20loading%20is%20the%20mechanism,They%20serve%20different%20purposes.)를 참고하자.
 
 **Dynamic Loading** 은 Runetime 에 Binary 를 Load 하는 Mechanism 이다.
 
-**Demand Paging** 은 필요할 Page 를 Load 하는 최적화 기법이다.
+**Demand Paging** 은 실행중에 필요한 Page 를 Load 하는 최적화 기법이다.
 
 그리고 둘 다 모두 Lazy Loading 이라는 방법을 사용한다는 점에선 같다.
 
