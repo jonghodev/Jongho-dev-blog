@@ -7,11 +7,11 @@ draft: false
 
 만약 100MB 메인 메모리에서 200MB 크기의 프로세스를 실행하려한다면 어떻게 해야할까?
 
-가상 메모리란 물리 메모리 크기 한계를 극복하기 위한 방법이다.
+가상 메모리란 이러한 물리 메모리 크기 한계를 극복하기 위한 방법이다.
 
 프로세스 이미지를 모두 메모리에 올리지 않고 페이지로 나누어서 현재 실행에 필요한 부분만 메모리에 올리는 것이다.
 
-동적 적재처럼 실행에 필요한 것만 메모리에 올린다는 개념은 비슷하다.
+> 동적 적재처럼 실행에 필요한 것만 메모리에 올린다는 개념은 비슷하다.
 
 ## Difference between dynamic loading and demand paging
 
@@ -21,7 +21,7 @@ draft: false
 
 **Demand Paging** 은 실행중에 필요한 Page 를 Load 하는 최적화 기법이다.
 
-그리고 둘 다 모두 Lazy Loading 이라는 방법을 사용한다는 점에선 같다.
+둘 다 모두 Lazy Loading 을 사용한다는 점에선 같다.
 
 ## Demand Paging
 
@@ -94,9 +94,15 @@ Effective Access Time 은 따라서 200 + 7,999,800p 가 되는데
 
 거의 40만번에 한 번 페이지 폴트가 일어나야 하는 것이다.
 
-Page Fault 가 일어날 때 Process 가 메모리를 찾아가는데 걸리는 시간이 저렇게 긴 이유는, seek time + rotational delay + transfer time 을 살펴보면
+Page Fault 가 일어날 때 Process 가 메모리를 찾아가는데 걸리는 시간이 저렇게 긴 이유가 뭘까?
 
-[rotational delay](https://www.computerhope.com/jargon/r/rotadela.htm#:~:text=A%20rotational%20delay%20is%20the,referred%20to%20as%20rotational%20latency.)는 빠르고 transfer time 도 전기신호가 이동하는 것이서어 빠르다. 근대 seek time 은 하드 디스크를 탐색하는 것이기 때문에 여기서 시간이 많이 걸린다.
+seek time + rotational delay + transfer time 을 살펴보자.
+
+transfer time 은 단순히 전기 신호가 오가는 것이어서 매우 빠르다.
+
+[rotational delay](https://www.computerhope.com/jargon/r/rotadela.htm#:~:text=A%20rotational%20delay%20is%20the,referred%20to%20as%20rotational%20latency.)도 또한 빠르다.
+
+seek time 은 하드 디스크를 탐색하는 것이다. 따라서 이곳에서 시간이 많이 걸린다.
 
 하드디스크, 즉 Backing Store(=Swap device) 에서 해당 Process 를 찾는데 시간이 걸리는 것이다.
 
