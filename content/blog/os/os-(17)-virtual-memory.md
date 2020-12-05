@@ -41,7 +41,7 @@ CPU 가 메모리에 접근하기 위해선 Page Table 에 접근을 먼저 하�
 
 그러므로 CPU 가 메모리에 접근을 할 때 해당 주소가 메인 메모리에 올라와있지 않을 수 있다. (Page Fault)
 
-![](./images/https://www.cs.jhu.edu/~yairamir/cs418/os6/sld006.htm)
+![](./images/2020-12-05-demand-paging.png)
 
 그래서 다음 사진과 같이 Page Table 에 메모리 번호를 기록하는 Frame 외에 **Valid** 라는 Bit 를 둔다. 그리고 해당 값이 1이면 현재 메모리에 올라와 있는 프로세스인 것이고, 0이면 현재 메모리에 없고 **Backing store(=swap device)** 에서 가져와함을 의미한다.
 
