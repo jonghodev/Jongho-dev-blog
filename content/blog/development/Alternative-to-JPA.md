@@ -1,7 +1,7 @@
 ---
 title: Alternative to JPA
 date: 2020-11-29 18:00:00
-category: development
+category: java
 draft: false
 ---
 
