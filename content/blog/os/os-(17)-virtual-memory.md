@@ -51,7 +51,7 @@ CPU 가 메모리에 접근하기 위해선 Page Table 에 접근을 먼저 하�
 
 다음과 같이 당장 필요한 프로세스만 메모리에 올려서, 메모리 절약을 할 수 있지만. CPU로 하여금 메모리에 접근할 때 더 일련의 과정을 거치게 되어 속도 저하는 있을 수 있다.
 
-### Pure Demand Paging vs Prepaging
+## Pure Demand Paging vs Prepaging
 
 ### Pure Demand
 
