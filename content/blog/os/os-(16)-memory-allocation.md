@@ -1,5 +1,5 @@
 ---
-title: OS (16) 메모리 할당
+title: OS (16) Memory Allocation
 date: 2020-12-04 07:00:00
 category: os
 draft: false
