@@ -1,5 +1,5 @@
 ---
-title: OS (2) 운영체제 역사
+title: OS (2) OS History
 date: 2020-11-17 10:11:82
 category: os
 draft: false

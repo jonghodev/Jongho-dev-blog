@@ -1,5 +1,5 @@
 ---
-title: OS (4) 이중모드, 하드웨어 보호
+title: OS (4) dual mode and hardware protection
 date: 2020-11-19 07:00:00
 category: os
 draft: false

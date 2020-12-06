@@ -1,5 +1,5 @@
 ---
-title: OS (0) OS 가 왜 중요할까?
+title: OS (0) Why OS Important?
 date: 2020-11-15 10:11:75
 category: os
 draft: false
@@ -84,9 +84,9 @@ Redis 를 사용할 때는 메모리 파편화, 가상 메모리, IO Bound 와 �
 
 OS 를 공부하며 점점 더 중요성을 느끼고 이 포스팅을 계속 업데이트 하고 있다.
 
-나는 경성대학교 양희재 교수님이 수업하시는 [강의](http://www.kocw.net/home/search/kemView.do?kemId=978503)로 OS 공부를 시작한다.
+나는 이 [블로그](https://covenant.tistory.com/100)에서 추천하는 강의를 보고 경성대학교 양희재 교수님이 수업하시는 [강의](http://www.kocw.net/home/search/kemView.do?kemId=978503)로 OS 공부를 시작한다.
 
-[블로그](http://blog.naver.com/PostList.nhn?from=postList&blogId=hjyang0&categoryNo=13&currentPage=8)에도 문제들이 있어서 풀어본다.
+> 양희재 교수님은 [블로그](http://blog.naver.com/PostList.nhn?from=postList&blogId=hjyang0&categoryNo=13&currentPage=8)에도 문제들을 정리해두신다.
 
 ## 목차
 

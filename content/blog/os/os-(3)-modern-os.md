@@ -1,5 +1,5 @@
 ---
-title: OS (3) 고등운영체제, 인터럽트 기반 운영체제
+title: OS (3) Modern OS
 date: 2020-11-18 07:00:00
 category: os
 draft: false
