@@ -1,5 +1,5 @@
 ---
-title: OS (14) 프로그램과 메모리
+title: OS (14) Program and Memory
 date: 2020-12-02 11:00:00
 category: os
 draft: false
