@@ -86,6 +86,8 @@ OS 를 공부하며 점점 더 중요성을 느끼고 이 포스팅을 계속 �
 
 나는 경성대학교 양희재 교수님이 수업하시는 [강의](http://www.kocw.net/home/search/kemView.do?kemId=978503)로 OS 공부를 시작한다.
 
+[블로그](http://blog.naver.com/PostList.nhn?from=postList&blogId=hjyang0&categoryNo=13&currentPage=8)에도 문제들이 있어서 풀어본다.
+
 ## 목차
 
 - 개요, 역사, 현대운영체제
