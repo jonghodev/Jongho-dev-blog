@@ -45,7 +45,7 @@ Linux 같은 OS 소스코드를 분석하거나 책을 보면서 OS 를 간단�
 
 [OS (3) Modern OS](</os/os-(3)-modern-os/>)
 
-[OS (4) Dual mode and Hardware protection](</os/os-(4)-dual-mode-and-hareware-protection/>)
+[OS (4) Dual mode and Hardware protection](</os/os-(4)-dual-mode-and-hardware-protection/>)
 
 [OS (5) OS Service](</os/os-(5)-os-service/>)
 
@@ -60,3 +60,25 @@ Linux 같은 OS 소스코드를 분석하거나 책을 보면서 OS 를 간단�
 [OS (10) Process creation and termination](</os/os-(10)-process-creation-and-termination/>)
 
 [OS (11) Thread](</os/os-(11)-thread/>)
+
+[OS (12) Process Synchronization](</os/os-(12)-process-synchronization/>)
+
+[OS (13) Deadlocks](</os/os-(13)-deadlocks/>)
+
+[OS (14) Program and memory](</os/os-(14)-program-and-memory/>)
+
+[OS (15) Dynamic Loading/Linking, Swapping](</os/os-(15)-dynamic-loading-linking-swapping/>)
+
+[OS (16) Memory Allocation](</os/os-(16)-memory-allocation/>)
+
+[OS (17) Virtual Memory](</os/os-(17)-virtual-memory/>)
+
+[OS (18) Page Replacement](</os/os-(18)-page-replacement/>)
+
+[OS (19) Allocation of Frames](</os/os-(19)-allocation-of-frames/>)
+
+[OS (20) Page Size](</os/os-(20)-page-size/>)
+
+[OS (21) File Allocation](</os/os-(21)-file-allocation/>)
+
+[OS (22) Disk Scheduling](</os/os-(22)-disk-scheduling/>)
