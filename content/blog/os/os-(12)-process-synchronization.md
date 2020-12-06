@@ -1,5 +1,5 @@
 ---
-title: OS (12) process synchronization
+title: OS (12) Process synchronization
 date: 2020-11-27 07:00:00
 category: os
 draft: false
