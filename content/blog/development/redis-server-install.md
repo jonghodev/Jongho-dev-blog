@@ -1,8 +1,8 @@
 ---
 title: Redis Server Install
-date: 2020-12-00 07:00:00
+date: 2020-12-11 07:00:00
 category: development
-draft: true
+draft: false
 ---
 
 Linux 에 Redis 를 설치하는 방법을 알아보자.
