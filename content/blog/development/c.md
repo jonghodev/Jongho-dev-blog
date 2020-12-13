@@ -11,13 +11,29 @@ draft: false
 
 C는 모듈화가 가능하게 하기 위해 각각의 모듈을 따로 컴파일 한 후, 컴파일 된 모듈들을 링커로 합칠 수 있다. 따라서, 전체 프로그램 중 특정한 모듈만 수정한 경우 나머지 모듈을은 다시 컴파일 할 필요가 없다.
 
+## Standard I/O
+
+- getchar()
+- scanf()
+- gets()
+
+위 함수는 Buffer 에서 데이터를 Read 한다는 (Buffered I/O) 점에선 동일하다.
+
+대신 `getchar()` 는 1 개의 character 만 int 형식으로 반환하고 `scanf()` 는 %d 와 같은 서식 문자열을 주어서 원하는 값으로 파싱해도 들고오고 `gets()` 는 한 라인을 들고오는 것 뿐이다.
+
+반면, `conio.h` 에서 들고오는 `getch()`[https://www.geeksforgeeks.org/getch-function-in-c-with-examples/] 함수의 경우 buffer 를 사용하지 않고 keyboard 의 입력을 wating 하다가 인터럽트가 발생하면 즉시 그 문자를 가져오는 방식이다.
+
+> gets() 함수는 심각한 보안 결함이 있어서 gets_s() 를 사용하는 것이 좋다.
+
+> scanf() 또한 문제가 있는데 scanf_s() 함수를 사용하면 된다. 하지만 윈도우에만 내장되어 있다.
+
 ## 컴파일 최적화
 
+> 의존성이 없는 소스코드는 동시에 실행해도 된다.
+
+> 컴파일러는 논리적으로 매우 당연한 코드는 제거한다.
+
 debug mode build 에서는 잘 작동하나, release mode build 에서는 오 작동하는 경우가 있다.
-
-의존성이 없는 소스코드는 동시에 실행해도 된다.
-
-컴파일러는 논리적으로 매우 당연한 코드는 제거한다.
 
 우리가 하이 래벨 코드 상에서 최적화 해서 짜는 건 어렵다. 그리고 최적화는 로우 래벨의 범위에서 일어나야 한다.
 
@@ -32,19 +48,19 @@ const 는 유지보수면에서도 좋지만, 변수가 아니라 상수로 인�
 
 > 고수들은 const 를 더 자주 사용한다고 한다.
 
-## Macro
+### Macro
 
 함수를 호출(Call)하면 매개 변수가 복사되고 스택도 쌓인다. 이것을 Call Overhead 라고 한다. (따라서 크기가 큰 구조체 같은 것을 함수에 넘기지 않는게 좋다.)
 
 함수로 만들기에 내용이 작고 자주 호출되는 것은 Macro 로 사용해서 Call Overhead 를 없앤다.
 
-## Inline
+### Inline
 
 컴파일 옵션에서 Inline 확장을 사용하면, 컴파일이 어떤 코드를 보고 판단하기에 인라인으로 처리할만하다고 생각하면 매크로처럼 번역이 된다. (Release build 의 경우)
 
 그래서 함수를 호출해도 Inline 으로 처리되기 때문에 함수 콜 스택이 사용되지 않고 성능이 더 좋아지게 된다.
 
-## Preprocessor If expression
+### Preprocessor If expression
 
 실무에서는 다음과 같이 사용할 수 있다.
 
@@ -55,7 +71,7 @@ const 는 유지보수면에서도 좋지만, 변수가 아니라 상수로 인�
   printf("release mode")
 ```
 
-## Macro 안 좋은 이유
+### Macro 안 좋은 이유
 
 Macro 함수에서 자료형을 검사하지 않는다. 그래서 Compile 시점에서 Warning 을 알 수 없다. 또한 연산자 순서에 의한 문제도 발생할 수 있다.
 
