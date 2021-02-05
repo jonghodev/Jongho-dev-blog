@@ -9,8 +9,6 @@ draft: false
 
 process: program in execution
 
-![](./images/2020-11-21-process.png)
-
 하드디스크 안에 있는 것을 Program 이라하고
 
 이 Program 이 Main Memory 의 Ram 영역에 올라오면 그것을 Process 라고 한다.

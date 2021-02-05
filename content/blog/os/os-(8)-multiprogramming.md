@@ -26,8 +26,6 @@ Job scheduler 는 io bound, cpu bound program 중 어떤 것을 올릴지도 결
 
 ## Medium-term scheduler
 
-![](./images/2020-11-23-medium-term-scheduler.png)
-
 Medium-term scheduler 란 스와핑에 관한 것이다. 메모리에 있는 프로세스를 줄여 degree of programming 을 낮춘다.
 
 메인 메모리에서 일정 시간 동안 활동하지 않는 프로세스를 Hard disk 의 Backing store 에 swap out 시킨다.
