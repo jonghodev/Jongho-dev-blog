@@ -8,6 +8,6 @@ lang: 'en'
 
 <div align="center">
 
-_Thank you for reading my resume. If you want to contact me, Please send me an email._
+개인적으로 개발 관련 내용을 노트하는 곳입니다.
 
 </div>
