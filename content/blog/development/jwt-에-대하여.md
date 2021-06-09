@@ -195,7 +195,7 @@ const signature = crypto
 console.log(signature)
 ```
 
-결과값: iHoqk_ELnlikekEwU19pRNVRPfFY1ayT76EP17Q4L-w
+결과값: `iHoqk_ELnlikekEwU19pRNVRPfFY1ayT76EP17Q4L-w`
 
 ## JWT 구조 - 마무리
 
