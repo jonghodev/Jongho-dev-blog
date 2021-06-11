@@ -78,15 +78,16 @@ SECP256K1 은 a 가 0 이고 b 가 7 이며 기준점 G 가 "02 79BE667E F9DCBBA
 
 ### 3. 서명 s 을 찾는다.
 
-![](./images/ethereum_sign_5.png)
+```text
+`k^-1(z+r*private key) mod n`
+```
 
-k: 위에서 구한 1 ~ n -1 의 랜덤한 값
+- k: 위에서 구한 1 ~ n -1 의 랜덤한 값
+- z: 트랜잭션 정보가 담긴 값
+- r: 서명 r
+- private key: 개인 키
 
-z: 트랜잭션 정보가 담긴 값
-
-r: 서명 r
-
-private key: 개인 키
+이때 계산 값이 0이 나오면, 난수 K 를 새롭게 생성하고 다시 계산해야 한다.
 
 **핵심: 서명 s 를 만들 때는 개인키가 들어가게 된다.**
 
@@ -98,9 +99,19 @@ private key: 개인 키
 
 받는 사람은 아래 공식으로 검증을 할 수 있다.
 
-![](./images/ethereum_sign_6.png)
+```text
+U1 * G + U2 * public key
+```
 
-위 식은 타원곡선의 연산으로, 결국 결과가 타원곡선 위의 점이 나오게 된다. 그리고 그 점의 x 좌표가 내가 받은 서명 r 과 같은지 비교하면 된다.
+```text
+U1 = z * w mod n
+U2 = r * w mod n
+w = s^-1 mod n
+```
+
+public key는 공개 키이자 복구 키로 이더리움에서는 서명값이 아닌 정수 27 또는 28을 사용한다.
+
+위 식은 타원곡선의 연산으로 결국 결과가 타원곡선 위의 점이 나오게 된다. 그리고 그 점의 x 좌표가 내가 받은 서명 r 과 같은지 비교하면 된다.
 
 ### 6. 공개키 구하기
 
@@ -141,3 +152,5 @@ http://www.yes24.com/Product/Goods/73165236
 https://rosypark.tistory.com/108
 
 https://perfectmoment.tistory.com/1231
+
+http://wiki.hash.kr/index.php/%ED%83%80%EC%9B%90%EA%B3%A1%EC%84%A0_%EB%94%94%EC%A7%80%ED%84%B8%EC%84%9C%EB%AA%85_%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98#cite_note-1
