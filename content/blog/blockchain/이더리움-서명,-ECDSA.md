@@ -1,17 +1,31 @@
 ---
-title: 이더리움 서명
+title: 이더리움 서명, ECDSA
 date: 2021-06-06 18:00:00
 category: blockchain
 draft: false
 ---
 
+## ECDSA (Elliptic Curve Digital Signature Algorithm)
+
+ECDSA 는 타원 곡선 암호를 전자 서명에 접목시킨 암호 알고리즘이다.
+
+비트코인과 이더리움에서 ECDSA 를 SECP256K1 로 사용하고 있다.
+
+개인키와 공개키가 한 쌍을 갖는다.
+
+> ECC (Elliptic Curve Cryptography): 유한 필드에 대한 타원 곡선을 기반으로 하는 공개 키 암호화에 대한 접근 방식
+
+## 디지털 서명
+
+디저털 서명은 송신자에 의해 만들어진다. 디지털 서명으로 발신자를 확인하고 데이터 변조 여부를 확인할 수 있다.
+
+부인 방지 (non-repudiation): 따라서 발신자가 메시지를 보내지 않았음을 부인할 수 없다.
+
+무결성 (integrity): 메시지가 전송 중에 변경되지 않았다.
+
+디지털 서명은 데이터를 해시한 값을 송신자의 비밀키로 암호화하는 것이다. 해시 알고리즘은 MD5, SHA-3 같은 것을 사용한다. (이더리움에서는 SHA3 를 사용한다.)
+
 ## 타원 곡선과 SECP256K1
-
-### 용어
-
-- SECP256K1: 타원 곡선
-- ECC (Elliptic Curve Cryptography): 유한 필드에 대한 타원 곡선을 기반으로 하는 공개 키 암호화에 대한 접근 방식
-- ECDSA (Elliptic Curve Digital Signature Algorithm)
 
 ### 타원 곡선 방정식
 
@@ -52,6 +66,8 @@ SECP256K1 은 a 가 0 이고 b 가 7 이며 기준점 G 가 "02 79BE667E F9DCBBA
 이 범위를 벗어나면 이더리움에서는 올바르지 않은 개인 키라고 에러를 보낸다.
 
 샘플 비밀키: 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF201808180457'
+
+> ECC 에서는 개인키를 구하고 공개키를 구하지만, RSA 에서는 공개키를 구하고 개인키를 구한다.
 
 ### 2. 서명 r 을 찾는다.
 
@@ -98,17 +114,21 @@ private key: 개인 키
 
 ### 공개키
 
-공개키 = 비밀키 x G
+공개키는 개인키로부터 구할 수 있다. 비밀키와 이더리움에서 정한 기준 점 G 를 곱하면 된다.
 
-공개키는 비밀키와 G를 곱하면 된다. 따라서 타원곡선 위의 점 G 에 상수를 곱하는 것이므로 그 값인 공개키 값고 타원 곡선 위의 점이다.
+위에서 말하기를 비밀키는 단순한 정수이므로 상수에 불과하고 점 G 는 타원 곡선 위의 점이므로 공개키도 타원 곡선위 점이라는 것을 알 수 있다.
+
+공개키 = 비밀키 x G
 
 ### 주소
 
-주소: 공개키의 오른쪽에서 40자리
+주소는 공개키로부터 구할 수 있다. 주소는 16진수로 공개키의 Keccak-256 해시의 마지막 20바이트를 구하면 된다.
 
-위에서 구한 공개키에서 오른쪽 40자리가 주소가 된다.
-
-따라서 우리는 개인키만 알면 공개키와 주소를 추출할 수 있다.
+```javascript
+function publicKeyToAddress(pubKey: Buffer): Buffer {
+  return keccak256(pubKey).slice(-20)
+}
+```
 
 ## References
 
@@ -117,3 +137,7 @@ https://brunch.co.kr/@nujabes403/13
 http://blog.somi.me/math/2019/06/10/understanding-ECC-ECDSA/
 
 http://www.yes24.com/Product/Goods/73165236
+
+https://rosypark.tistory.com/108
+
+https://perfectmoment.tistory.com/1231
