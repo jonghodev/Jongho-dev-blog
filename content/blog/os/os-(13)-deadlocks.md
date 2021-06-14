@@ -88,7 +88,7 @@ Process Synchronization 에 관한건 [이곳](</os/os-(12)-process-synchronizat
 
 ## 교착상태 회피: Deadlock Avoidance
 
-Banker's Algorythm 에 기인한 해결방법으로, Safe allocation 과 Unsafe allocation 을 고려하는 것이다.
+Banker's Algorithm 에 기인한 해결방법으로, Safe allocation 과 Unsafe allocation 을 고려하는 것이다.
 
 프로세스가 자원에 대한 요청을 할 때, 미리 나중에 교착상태가 발생할지를 검사하고 할당을 해줌으로써 회피를 할 수 있다.
 

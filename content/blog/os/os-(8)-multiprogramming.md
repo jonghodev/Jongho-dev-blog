@@ -44,7 +44,7 @@ switching 이 일어날 때 현재 상태, register 값이나 MMU(base, limit) �
 
 OS 안의 Process Management 의 Dispatcher 가 이러한 Context 를 저장하고 Restore 하는 일을 한다.
 
-또한 이러한 작업에는 Overhead (Context Switching Overhead) 가 있다. 그래서 간단한 Algorythm 이 사용된다. 그래서 Overhead 를 줄이기 위해 C 같은 High Level Language 가 아니라 Assembly 로 프로그래밍된다.
+또한 이러한 작업에는 Overhead (Context Switching Overhead) 가 있다. 그래서 간단한 Algorithm 이 사용된다. 그래서 Overhead 를 줄이기 위해 C 같은 High Level Language 가 아니라 Assembly 로 프로그래밍된다.
 
 ## 출처
 
