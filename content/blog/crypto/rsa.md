@@ -5,7 +5,7 @@ category: development
 draft: false
 ---
 
-[공개키 암호화](/crpyto/공개키-암호화/)
+[공개키 암호화](/crypto/공개키-암호화/)
 
 ## RSA 키 생성
 
