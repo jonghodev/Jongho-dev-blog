@@ -7,9 +7,7 @@ draft: false
 
 ## Process management
 
-프로세스 (process)
-
-메모리에서 실행 중인 프로그램 (program in execution)
+프로세스(process) 란 메모리에서 실행 중인 프로그램을 말한다. (program in execution)
 
 주요 기능
 
