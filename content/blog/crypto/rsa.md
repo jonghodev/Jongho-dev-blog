@@ -5,7 +5,9 @@ category: development
 draft: false
 ---
 
-[공개키 암호화](/crypto/공개키-암호화/)
+RSA 는 [공개키 암호](/crypto/공개키-암호화/)시스템의 하나로, 암호화 뿐만 아니라 전자서명이 가능한 최초의 알고리즘으로 알려져 있다. 전자 상거래에서 널리 이용되고 있다.
+
+RSA 암호체계는 큰 숫자를 소인수 분해하는 것이 어렵다는 것에 기반을 두고 있다.
 
 ## RSA 키 생성
 
@@ -23,6 +25,8 @@ draft: false
 > RSA는 공개 키를 먼저 구한 다음에 개인 키를 구한다. ECC의 경우 RSA와 반대로 개인 키를 먼저 구한 후 공개 키를 구한다.
 
 ## References
+
+https://ko.wikipedia.org/wiki/RSA_%EC%95%94%ED%98%B8
 
 https://code13.tistory.com/272
 
