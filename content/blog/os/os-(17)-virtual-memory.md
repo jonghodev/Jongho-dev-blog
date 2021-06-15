@@ -45,7 +45,7 @@ CPU 가 메모리에 접근하기 위해선 Page Table 에 접근을 먼저 하�
 
 그래서 다음 사진과 같이 Page Table 에 메모리 번호를 기록하는 Frame 외에 **Valid** 라는 Bit 를 둔다. 그리고 해당 값이 1이면 현재 메모리에 올라와 있는 프로세스인 것이고, 0이면 현재 메모리에 없고 **Backing store(=swap device)** 에서 가져와함을 의미한다.
 
-따라서 CPU 가 접근을 할 때 Invalid 하다면(Page Fault), Page Table 에서 CPU 로 Interrupt 를 보낸다. 그리고 CPU 는 OS 의 handling a page fault routine 으로 점프한다.
+따라서 CPU 가 접근을 할 때 Invalid 하다면(Page Fault), Page Table 에서 CPU 로 Interrupt 를 보낸다. 그리고 CPU 는 OS 의 handling a page fault routine 으로 점프한다. [참고](http://faculty.salina.k-state.edu/tim/ossg/Memory/virt_mem/page_fault.html)
 
 그 Page Fault Routine 에서, 해당 프로세스의 페이지를 **Backing store** 에서 찾아서 메모리에 로드해주고, 그 메모리의 프레임 번호를 페이지 테이블에 기록하며 Valid Bit 도 1로 수정해준다. 그리고 CPU 는 그 값을 읽게 되는 것이다.
 
