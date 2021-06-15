@@ -19,7 +19,7 @@ draft: false
 
 **Dynamic Loading** 은 Runetime 에 Binary 를 Load 하는 Mechanism 이다.
 
-**Demand Paging** 은 실행중에 필요한 Page 를 Load 하는 최적화 기법이다.
+**Demand Paging** 은 오직 필요할 때만 그 Page 를 Load 하는 최적화 기법이다.
 
 둘 다 모두 Lazy Loading 을 사용한다는 점에선 같다.
 
