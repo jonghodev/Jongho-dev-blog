@@ -110,7 +110,7 @@ B Process 가 임계구역에 들어갈 수 있게 된다.
 ### 자바 모니터
 
 - 배타동기: synchronized 라는 키워드를 사용하여 지정
-- 조건동기: wati(), notify(), notifyAll() 메소드 사용
+- 조건동기: wait(), notify(), notifyAll() 메소드 사용
 
 ## Semaphore 예제: Bank Account Problem
 

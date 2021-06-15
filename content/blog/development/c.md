@@ -21,7 +21,7 @@ C는 모듈화가 가능하게 하기 위해 각각의 모듈을 따로 컴파�
 
 대신 `getchar()` 는 1 개의 character 만 int 형식으로 반환하고 `scanf()` 는 %d 와 같은 서식 문자열을 주어서 원하는 값으로 파싱해도 들고오고 `gets()` 는 한 라인을 들고오는 것 뿐이다.
 
-반면, `conio.h` 에서 들고오는 `getch()`[https://www.geeksforgeeks.org/getch-function-in-c-with-examples/] 함수의 경우 buffer 를 사용하지 않고 keyboard 의 입력을 wating 하다가 인터럽트가 발생하면 즉시 그 문자를 가져오는 방식이다.
+반면, `conio.h` 에서 들고오는 `getch()`[https://www.geeksforgeeks.org/getch-function-in-c-with-examples/] 함수의 경우 buffer 를 사용하지 않고 keyboard 의 입력을 waitng 하다가 인터럽트가 발생하면 즉시 그 문자를 가져오는 방식이다.
 
 > gets() 함수는 심각한 보안 결함이 있어서 gets_s() 를 사용하는 것이 좋다.
 
