@@ -7,6 +7,10 @@ draft: false
 
 ## N+1 문제
 
+### Entity
+
+아래와 같은 엔티티를 선언해했다.
+
 ```java
 @Entity
 public class Member {
@@ -18,13 +22,15 @@ public class Member {
 }
 ```
 
-위와 같은 엔티티가 있다.
+### em.find
+
+아래의 메소드로 조회를 해보자.
 
 ```java
 em.find(Member.class, id)
 ```
 
-위의 메소드로 조회한 SQL 은 다음과 같다.
+조회한 SQL 문은 다음과 같다. 조인을 이용해 한 번에 조회하는 것을 볼 수 있다.
 
 ```sql
 SELECT M.*, O.*
@@ -33,7 +39,9 @@ FROM
 OUTER JOIN ORDERS O ON M.ID=O.MEMBER_ID
 ```
 
-조인을 이용해 한 번에 조회하는 것을 볼 수 있다.
+### JPQL
+
+아래의 메소드로 조회를 해보자.
 
 ```java
 List<Member> members =
@@ -41,7 +49,7 @@ List<Member> members =
 		.getResultList();
 ```
 
-위의 메소드로 조회한 SQL 은 다음과 같다.
+조회한 SQL 문은 다음과 같다.
 
 ```sql
 SELECT * FROM MEMBER
@@ -60,9 +68,15 @@ SELECT * FROM ORDERS WHERE MEMBER_ID=?
 
 위 문제는 글로벌 전략을 지연 로딩으로 설정하여도 비즈니스 로직에서는 어차피 실제 사용할 때 로딩이 발생하므로 똑같은 N+1 문제가 발생하게 된다.
 
-따라서 해결방법은 다음과 같다.
+### 해결방법
+
+N + 1 문제는 상당한 퍼포먼스 저하를 일으키기 때문에 일어나게 해서 안 된다.
+
+해결방법은 다음과 같다.
 
 1. 페치 조인 사용
+
+JPQL 을 사용할 경우 다음과 같이 조인을 해서 조회하면 한 번에 조회해올 수 있다.
 
 ```sql
 select m from Member m join fetch m.orders
@@ -74,7 +88,9 @@ select m from Member m join fetch m.orders
 
 **정리를 해보자.**
 
-왠만하면 모두 지연 로딩을 사용한다. 그리고 성능 최적화가 꼭 필요한 곳에서 JPQL 페치 조인을 사용하자.
+### 정리
+
+가능하면 모든 연관관계 매핑에서 지연 로딩을 사용하는 것이 좋다. 그리고 성능 최적화가 꼭 필요한 곳에서 JPQL 페치 조인을 사용하자.
 
 기본값이 즉시 로딩인 `@OneToOne` 과 `@ManyToOne` 은 지연 로딩 전략으로 바꿔주자.
 
@@ -97,7 +113,7 @@ TypedQuery<Order> query = em.createQuery("select o from Order o"), Order.class);
 query.setHint("org.hibernate.readOnly", true);
 ```
 
-읽기 전용으로 조회했으므로 영속성 컨텍스트는 스냅샷을 보관하지 않는다. 따라서 메모리를 최적화 할 수 있다. 단 스냅샷이 없으므로 엔티티를 수정해서 데이터베이스에 반영되지 않는다.
+읽기 전용으로 조회했으므로 영속성 컨텍스트는 스냅샷을 보관하지 않는다. 따라서 메모리를 최적화 할 수 있다. 단 스냅샷이 없으므로 엔티티를 수정해도 데이터베이스에 반영되지 않는다.
 
 3. 읽기 전용 트랜잭션 사용
 
@@ -187,7 +203,9 @@ commit();
 
 네트워크 호출은 단순한 메소드를 수만 번 호출하는 것보다 더 큰 비용이 든다. 위 코드는 5번의 INSERT SQL 과 1번의 커밋으로 총 6번 데이터베이스와 통신한다. 이것을 최적화 하려면 5번의 INSERT SQL 을 모아서 한 번에 데이터베이스로 보내면 된다. JDBC 가 제공하는 SQL 배치 기능을 사용해도 되지만 코드의 많은 부분을 수정해야 하므로, JPA 의 플러시 기능을 이용해 쉽게 구현할 수 있다.
 
-`hibernate.jdbc.batch_size` 속성의 값에 50을 주면 최대 50건씩 모아서 SQL 배치를 실행한다. 하지만 SQL 배치는 같은 SQL 일 때만 유효한다. 중간에 다른 처리가 들어가면 배치를 다시 시작한다. 예를들어보자.
+`hibernate.jdbc.batch_size` 속성의 값에 50을 주면 최대 50건씩 모아서 SQL 배치를 실행한다. 하지만 SQL 배치는 같은 SQL 일 때만 유효한다. 중간에 다른 처리가 들어가면 배치를 다시 시작한다.
+
+예를들어보면 아래의 코드는 총 3번 SQL 배치를 실행한다.
 
 ```java
 em.persist(new Member()); // 1
@@ -199,9 +217,8 @@ em.persist(new Member()); // 6
 em.persist(new Member()); // 7
 ```
 
-따라서 총 3번 SQL 배치를 실행한다.
+### 주의사항
 
-주의사항
 엔티티가 영속 상태가 되려면 식별자가 꼭 필요하다. 그런데 IDENTITY 식별자 생성 전략은 엔티티를 데이터베이스에 저장해야 식별자를 구할 수 있으므로 `em.persist()` 를 호출하는 즉시 `INSERT SQL` 이 데이터베이스에 전달된다. 따라서 쓰기 전략을 활용한 성능 최적화를 할 수 없다.
 
 ## 트랜잭션을 지원하는 쓰기 지연과 애플리케이션 확장성
