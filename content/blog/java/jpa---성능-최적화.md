@@ -7,9 +7,7 @@ draft: false
 
 ## N+1 문제
 
-### Entity
-
-아래와 같은 엔티티를 선언해했다.
+JPA 개발할 때 가장 주의해야하는 것은 N+1 문제다. 왜냐면 심각한 성능 문제를 일으키기 때문이다. 예제를 통해 N+1 문제에 대해 알아보자.
 
 ```java
 @Entity
@@ -22,15 +20,24 @@ public class Member {
 }
 ```
 
-### em.find
+```java
+@Entity
+public class Order {
+	@Id @GeneratedValue
+	private Long id;
 
-아래의 메소드로 조회를 해보자.
+  @ManyToOne
+  private Member member;
+}
+```
+
+### 즉시 로딩과 N+1
 
 ```java
 em.find(Member.class, id)
 ```
 
-조회한 SQL 문은 다음과 같다. 조인을 이용해 한 번에 조회하는 것을 볼 수 있다.
+조회한 SQL 문은 다음과 같다.
 
 ```sql
 SELECT M.*, O.*
@@ -39,9 +46,7 @@ FROM
 OUTER JOIN ORDERS O ON M.ID=O.MEMBER_ID
 ```
 
-### JPQL
-
-아래의 메소드로 조회를 해보자.
+조인을 이용해 한 번에 조회하는 것을 볼 수 있다. 여기까지는 로직이 괜찮지만 문제는 JPQL 을 사용할 때 발생한다.
 
 ```java
 List<Member> members =
@@ -49,13 +54,13 @@ List<Member> members =
 		.getResultList();
 ```
 
-조회한 SQL 문은 다음과 같다.
+JPQL 을 실행하면 JPA 는 이것을 분석해서 SQL 을 생성한다. 이때 즉시 로딩과 지연 로딩에 대해서 전혀 신경쓰지 않고 JPQL 만 이용해서 SQL 을 생성한다. 따라서 다음과 같은 SQL 이 실행된다.
 
 ```sql
 SELECT * FROM MEMBER
 ```
 
-문제는 여기서 발생한다. SQL 의 실행 결과로 먼저 회원 엔티티를 로딩한다. 그런데 글로벌 전략이 즉시 로딩으로 설정되어 있으므로 JPA 는 주문 컬렉션을 즉시 로딩하려고 다음 SQL 을 List 의 수만큼 추가로 실행한다.
+SQL 의 실행 결과로 먼저 회원 엔티티를 로딩한다. 그런데 글로벌 전략이 즉시 로딩으로 설정되어 있으므로 JPA 는 주문 컬렉션을 즉시 로딩하려고 다음 SQL 을 List 의 수만큼 추가로 실행한다.
 
 ```sql
 SELECT * FROM ORDERS WHERE MEMBER_ID=?
@@ -66,17 +71,53 @@ SELECT * FROM ORDERS WHERE MEMBER_ID=?
 ...
 ```
 
-위 문제는 글로벌 전략을 지연 로딩으로 설정하여도 비즈니스 로직에서는 어차피 실제 사용할 때 로딩이 발생하므로 똑같은 N+1 문제가 발생하게 된다.
+### 지연 로딩과 N + 1
+
+```java
+@Entity
+public class Member {
+	@Id @GeneratedValue
+	private Long id;
+
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+	private List<Order> orders = new ArrayList<>();
+}
+```
+
+다음과 같이 지연 로딩을 설정하면 JPQL 에서는 N+1 문제가 발생하지 않는다.
+
+```java
+List<Member> members =
+		em.createQuery("select m from Member m", Member.class)
+		.getResultList();
+```
+
+하지만 이후 비즈니스 로직에서 주문 컬렉션을 실제 사용할 때 지연 로딩이 발생한다.
+
+```java
+for (Member member : members) {
+  System.out.println("member = " + member.getOrders().size());
+}
+```
+
+```sql
+SELECT * FROM ORDERS WHERE MEMBER_ID=1
+SELECT * FROM ORDERS WHERE MEMBER_ID=2
+SELECT * FROM ORDERS WHERE MEMBER_ID=3
+SELECT * FROM ORDERS WHERE MEMBER_ID=4
+SELECT * FROM ORDERS WHERE MEMBER_ID=5
+...
+```
+
+결국 위 문제는 글로벌 전략을 지연 로딩으로 설정하여도 비즈니스 로직에서는 어차피 실제 사용할 때 로딩이 발생하므로 똑같은 N+1 문제가 발생하게 된다.
+
+N+1 문제를 해결할 수 있는 다양한 방법을 알아보자.
 
 ### 해결방법
 
-N + 1 문제는 상당한 퍼포먼스 저하를 일으키기 때문에 일어나게 해서 안 된다.
-
-해결방법은 다음과 같다.
-
 1. 페치 조인 사용
 
-JPQL 을 사용할 경우 다음과 같이 조인을 해서 조회하면 한 번에 조회해올 수 있다.
+다음과 같이 한 번에 조회할 수 있다.
 
 ```sql
 select m from Member m join fetch m.orders
@@ -86,13 +127,11 @@ select m from Member m join fetch m.orders
 
 3. Hibernate 의 `@Fetch(FetchMode.SUBSELECT` 사용
 
-**정리를 해보자.**
-
 ### 정리
 
-가능하면 모든 연관관계 매핑에서 지연 로딩을 사용하는 것이 좋다. 그리고 성능 최적화가 꼭 필요한 곳에서 JPQL 페치 조인을 사용하자.
+가능하면 모든 연관관계 매핑에서 **지연 로딩을 사용하는 것이 좋다.** 즉시 로딩 전략은 그럴듯해 보이지만 N+1 문제는 물론이고 비즈니스 로직에 필요하지 않은 엔티티를 로딩해야하는 상황이 자주 발생한다. 그리고 성능 최적화가 힘들다. 따라서 가능하면 모든 곳에서 지연 로딩을 사용하고 성능 최적화가 꼭 필요한 곳에서 JPQL 페치 조인을 사용하자.
 
-기본값이 즉시 로딩인 `@OneToOne` 과 `@ManyToOne` 은 지연 로딩 전략으로 바꿔주자.
+> 기본값이 즉시 로딩인 `@OneToOne` 과 `@ManyToOne` 은 지연 로딩 전략으로 바꿔주자.
 
 ## 읽기 전용 쿼리의 성능 최적화
 
@@ -223,7 +262,31 @@ em.persist(new Member()); // 7
 
 ## 트랜잭션을 지원하는 쓰기 지연과 애플리케이션 확장성
 
-트랜잭션을 지원하는 쓰기 지연과 변경 감지 기능 덕분에 성능과 개발의 편의성이라는 두 마리 토끼를 모두 잡을 수 있었다. 하지만 진짜 장점은 데이터베이스 테이블 로우에 락을 걸리는 시간을 최소화한다는 점이다.
+트랜잭션을 지원하는 쓰기 지연과 변경 감지 기능 덕분에 성능과 개발의 편의성이라는 두 마리 토끼를 모두 잡을 수 있었다. 하지만 진짜 장점은 **데이터베이스 테이블 로우에 락을 걸리는 시간을 최소화**한다는 점이다.
+
+다음 로직을 보자.
+
+```java
+update(memberA); // UPDATE SQL A
+비즈니스 로직 1 // UPDATE SQL ...
+비즈니스 로직 2 // INSERT SQL ...
+```
+
+JPA 를 사용하지 않고 SQL 을 직접 다루면 `update(memberA)` 를 호출할 때 UPDATE SQL 을 실행하면서 데이터베이스 테이블 로우에 락을 건다. 이 락은 비즈니스 로직 1, 2 를 모두 수행하고 `commit()` 을 호출할 때까지 유지된다. 트랜잭션 격리수준(Isolation Level)에 따라 다르지만 보통 많이 사용하는 `Read Commited` 격리 수준이나 그 이상에서는 데이테어베이스에 현재 수정 중인 데이터를 수정하려는 다른 트랜잭션은 락이 풀릴 때가지 대기한다.
+
+JPA 는 커밋을 해야 플러시를 호출하고 데이터베이스에 수정 쿼리를 보낸다. 예제에서 `commit()` 을 호출할 때 모든 SQL 문을 바로 커밋하므로 데이터 베이스에 락이 걸리는 시간을 최소화한다.
+
+사용자가 증가하면 애플리케이션 서버를 증설하면 된다. 하지만 데이터베이스 락은 애플리케이션 서버 증설만으로는 해결할 수 없다. 오히려 애플리케이션 서버를 증설해서 트랜잭션이 증가할수록 더 많은 데이터베이스 락이 걸린다. JPA 쓰기 지연 기능은 데이터베이스 락이 걸리는 시간을 최소화해서 동시에 더 많은 트랜잭션을 처리할 수 있는 장점이 있다.
+
+## 정리
+
+- 같은 영속성 컨텍스트의 엔티티를 비교할 때는 동일성 비교를 할 수 있지만 영속성 컨텍스트가 다르면 동일성 비교에 실패한다. 따라서 자주 변하지 않는 비즈니스 키를 사용한 동등성 비교를 해야 한다.
+- 프록시를 사용하는 클라이언트는 조회한 엔티티가 프록시인지 아닌지 구분하지 않고 사용할 수 있어야 한다. 하지만 프록시는 기술적인 한계가 있으므로 한계점을 인식하고 사용해야 한다.
+- JPA 를 사용할 때는 N+1 문제를 가장 조심해야 한다. N+1 문제는 주로 페치 조인을 사용해서 해결한다.
+- 엔티티를 읽기 전용으로 조회하면 스냅샷을 유지할 필요가 없고 영속성 컨텍스트를 플러시하지 않아도 된다.
+- 대량의 엔티티를 배치 처리하려면 적절한 시점에 꼭 플러시를 호출하고 영속성 컨텍스트로 초기화해야 한다.
+- JPA 은 SQL 쿼리 힌트를 제공하지 않지만 하이버네이트 구현체는 제공한다.
+- 트랜잭션을 지원하는 쓰기 지연 덕분에 SQL 배치 기능을 사용할 수 있다.
 
 ## 출처
 
