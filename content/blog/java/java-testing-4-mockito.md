@@ -7,15 +7,11 @@ draft: false
 
 ## 1. 소개
 
----
-
 Mock: 진짜 객체와 비슷하게 동작하지만 프로그래머가 직접 그 객체의 행동을 관리하는 객체.
 
 [Mockito](https://site.mockito.org/): Mock 객체를 쉽게 만들고 관리하고 검증할 수 있는 방법을 제공한다.
 
 ## 2. 시작
-
----
 
 스프링부트 2.2+ 프로젝트 생성 시 spring-boot-starter-test 에서 자동으로 추가해줍니다.
 
@@ -81,8 +77,6 @@ class StudyServiceTest {
 
 ## 4. Mock 객체 Stubbing
 
----
-
 모든 Mock 객체의 행동
 
 - Null을 리턴한다. (Optional 타입은 Optional.empty 리턴)
@@ -134,8 +128,6 @@ class StudyServiceTest {
 
 ## 5. Mock 객체 확인
 
----
-
 Mock 객체가 어떻게 사용이 됐는지 확인할 수 있다.
 
 - 특정 메소드가 특정 매개변수로 몇번 호출 되었는지, 최소 한번은 호출 됐는지, 전혀 호출되지 않았는지
@@ -151,8 +143,6 @@ verify(memberService, times(1)).findById(study)
 ```
 
 ## 6. Mockito BDD 스타일 API
-
----
 
 [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development): **애플리케이션이 어떻게 “행동”해야 하는지**에 대한 공통된 이해를 구성하는 방법으로, TDD에서 창안했다.
 
