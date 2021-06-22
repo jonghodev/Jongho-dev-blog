@@ -5,17 +5,23 @@ category: java
 draft: false
 ---
 
+DB 에서는 FK(외래 키)가 기본키에 포함되는지 여부에 따라 식별, 비식별 관계로 구분된다.
+
+보통 비식별 관계를 사용하고 필요한 상황에서 식별 관계를 사용한다.
+
 ## 식별 관계
 
-부모 테이블의 기본 키를 내려 받아 기본 키 + 외래키로 사용하는 전략이다.
+부모 테이블의 기본 키를 내려 받아 <span style="color:orange;font-weight:bold">기본 키 + 외래 키</span>로 사용하는 전략이다.
 
 ## 비식별 관계
 
-부모 테이블의 기본 키를 내려 받아 외래 키로만 사용하는 전략이다.
+부모 테이블의 기본 키를 내려 받아 <span style="color:orange;font-weight:bold">외래 키로만 사용하는</span> 전략이다.
 
 필수적 비식별 관계: 외래 키에 null 을 허용 하지 않는다.
 
 선택적 비식별 관계: 외래 키에 null 을 허용한다.
+
+선택적 비식별관계는 항상 외부 조인을 사용해야 하나 필수적 비식별관계는 내부 조인만을 사용할 수 있다.
 
 ## 식별 관계 vs 비식별 관계
 
@@ -36,9 +42,7 @@ draft: false
 
 이처럼 식별 관계가 가지는 장점도 있으므로 **꼭 필요한 곳에는 적절하게 사용**하는 것이 데이터베이스 테이블 설계의 묘를 살리는 방법이다.
 
-가능한 ORM 신규 프로젝트에선, **필수적 비식별관계**를 사용하고 기본 키는 **Long 타입의 대리키**를 사용하자.
-
-선택적 비식별관계는 항상 외부 조인을 사용해야 하나 필수적 비식별관계는 내부 조인만을 사용할 수 있다.
+> 가능한 ORM 신규 프로젝트에선, **필수적 비식별관계**를 사용하고 기본 키는 **Long 타입의 대리키**를 사용하자.
 
 ## @IdClass vs @EmbeddedId
 
@@ -48,16 +52,14 @@ draft: false
 
 각각 장단점이 있으므로 취향에 맞는 것을 일관성 있게 사용하면 된다.
 
-`@EmbbedId` 가 `@IdClass` 와 비교해서 더 객체지향적이고 중복도 없어 보여서 좋아보이긴 하지만
-
-특정상황에서 JPQL 이 길어 질 수 있다.
+`@EmbbedId` 가 `@IdClass` 와 비교해서 더 객체지향적이고 중복도 없어 보여서 좋아보이긴 하지만 특정상황에서 JPQL 이 길어 질 수 있다.
 
 ```java
 em.createQuery("select p.id.id1, p.id.id2 from Parent p"); // EmbeddedId
 em.createQuery("select p.id1, p.id2 from Parent p"); // EmbeddedId
 ```
 
-복합 키에는 어떤 컬럼에도 `@GenerateValue` 를 사용할 수 없다.
+> 복합 키에는 어떤 컬럼에도 `@GenerateValue` 를 사용할 수 없다.
 
 ## 복합 키: 비식별 관계 매핑 - @IdClass 매핑 예제
 
@@ -106,18 +108,16 @@ public class ParentId implements Serializable {
 - 기본 생성자가 있어야 한다.
 - 식별자 클래스는 public 이어야 한다.
 
-저장과 호출
-
----
+### 저장과 호출
 
 ```java
 // 저장
 Parent parent = new Parent();
-parent.setId("MyId1"); // 식별자
-parent.setId("MyId2"); // 식별자
+parent.setId1("MyId1"); // 식별자
+parent.setId2("MyId2"); // 식별자
 parent.setName("parentName");
 /* em.persist() 를 호출하면 영속성 컨텍스트에 엔티티를 등록하기 직전에 내부에서
-/ ParentId 를 생성하고 영속성 컨텍스트의 키로 사용한다. */
+ParentId 를 생성하고 영속성 컨텍스트의 키로 사용한다. */
 em.persist(parent);
 
 // 호출
@@ -125,9 +125,7 @@ ParentId parentId = new ParentId("MyId1", "MyId2");
 Parent parent = em.find(Parent.class, parentId);
 ```
 
-자식 클래스 생성
-
----
+### 자식 클래스 생성
 
 ```java
 @Entity
@@ -195,9 +193,7 @@ public class ParentId {
 - 기본 생성자가 있어야 한다.
 - 식별자 클래스는 public 이어야 한다.
 
-저장과 호출 코드
-
----
+### 저장과 호출 코드
 
 ```java
 // 저장
@@ -221,8 +217,7 @@ ParentId id2 = new ParentId("myId1", "myId2");
 id1.equals(id2) // true 가 나와야한다.
 ```
 
-만약 equals 를 따로 구현하지 않다면 Object Class 의 인스턴스 참조값 비교 == 를 하기 때문에
-false 가 나온다. 따라서 equals 를 Override 를 해서 true 가 나오게 해야한다.
+복합키를 사용할 경우 `equals` 를 재정의해야 한다. 그렇지 않으면 `Object Class` 의 기본 `equals` 메서드인 참조값 비교 `==` 를 사용하기 때문이다.
 
 ## 출처
 

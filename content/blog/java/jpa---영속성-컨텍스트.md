@@ -2,7 +2,6 @@
 title: JPA - 영속성 컨텍스트
 date: 2020-10-12 13:10:79
 category: java
-thumbnail: { thumbnailSrc }
 draft: false
 ---
 
