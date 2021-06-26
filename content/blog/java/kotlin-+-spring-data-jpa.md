@@ -130,6 +130,11 @@ open class Person {
 Gradle 플러그인에 아래의 플러그인을 추가해주자.
 
 ```gradle
+plugins {
+    ...
+    kotlin("plugin.allopen") version "1.5.20"
+}
+
 allOpen {
     annotation("javax.persistence.Entity")
 }
@@ -146,7 +151,11 @@ Kotlin 컴파일러를 이용하면 이 기본 생성자도 특정 어노테이�
 다음과 같이 적용해준다.
 
 ```gradle
-apply plugin: "kotlin-noarg"
+plugins {
+    ...
+    kotlin("plugin.noarg") version "1.5.20"
+}
+
 noArg {
     annotation("javax.persistence.Entity")
 }
