@@ -2,7 +2,6 @@
 title: JPA - 2차 캐시
 date: 2020-10-17 19:10:49
 category: java
-thumbnail: { thumbnailSrc }
 draft: false
 ---
 

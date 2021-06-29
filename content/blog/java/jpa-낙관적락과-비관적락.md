@@ -1,5 +1,5 @@
 ---
-title: JPA 낙관적락과 비관적락
+title: JPA - 낙관적락과 비관적락
 date: 2021-06-24 22:00:00
 category: java
 draft: false

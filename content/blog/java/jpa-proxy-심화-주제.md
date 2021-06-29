@@ -2,7 +2,6 @@
 title: JPA - Proxy 심화 주제
 date: 2020-10-17 15:10:62
 category: java
-thumbnail: { thumbnailSrc }
 draft: false
 ---
 

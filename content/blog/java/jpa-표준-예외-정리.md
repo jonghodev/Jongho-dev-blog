@@ -2,7 +2,6 @@
 title: JPA - 표준 예외 정리
 date: 2020-10-17 13:10:81
 category: java
-thumbnail: { thumbnailSrc }
 draft: false
 ---
 
